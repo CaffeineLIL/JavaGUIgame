@@ -1,10 +1,10 @@
 package status_basis;
 
-import abstracts.Hitbox;
+import abstracts.abstractHitbox;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class RectangleHitbox extends Hitbox {
+public class RectangleHitbox extends abstractHitbox {
 
     public RectangleHitbox(int x, int y, int width, int height) {
         super(x, y, width, height);

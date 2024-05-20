@@ -2,10 +2,10 @@ package abstracts;
 
 import java.awt.Graphics;
 
-public abstract class Hitbox {
+public abstract class abstractHitbox {
     protected int x, y, width, height;
 
-    public Hitbox(int x, int y, int width, int height) {
+    public abstractHitbox(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -14,7 +14,7 @@ public abstract class Hitbox {
 
     public abstract void draw(Graphics g);
 
-    public boolean intersects(Hitbox other) {
+    public boolean intersects(abstractHitbox other) {
         return this.x < other.x + other.width && this.x + this.width > other.x &&
                this.y < other.y + other.height && this.y + this.height > other.y;
     }
