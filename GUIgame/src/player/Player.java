@@ -3,9 +3,12 @@ package player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import status_basis.RectangleHitbox.*;
+import java.awt.image.BufferedImage;
+import status_basis.RectangleHitbox;
+import status_basis.TransparentHitbox;
+import stage.Map_bg;
 
-public class player extends JFrame {
+public class Player extends JFrame {
 
     private int x = 50;
     private int y = 50;
@@ -17,16 +20,25 @@ public class player extends JFrame {
     private boolean leftPressed = false;
     private boolean rightPressed = false;
 
-    private status_basis.RectangleHitbox hitbox;
+    private RectangleHitbox hitbox;
+    private BufferedImage backgroundImage;
+    private BufferedImage playerImage;
 
-    public player() {
+    public Player() {
         setTitle("캐릭터 움직임 구현");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // 이미지 로드
+        Map_bg mapBg = new Map_bg();
+        backgroundImage = mapBg.getImage();
+
+        PlayerImage playerImg = new PlayerImage();
+        playerImage = playerImg.getImage();
+
         // 초기 히트박스 설정
-        hitbox = new status_basis.RectangleHitbox(x, y, SIZE, SIZE);
+        hitbox = new TransparentHitbox(x, y, SIZE, SIZE);
 
         // JPanel 설정
         DrawPanel drawPanel = new DrawPanel();
@@ -118,16 +130,22 @@ public class player extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.setColor(Color.RED);
-            g.fillRect(x, y, SIZE, SIZE);
 
+            // 배경 이미지 그리기
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+            }
+
+            // 캐릭터 이미지 그리기
+            if (playerImage != null) {
+                g.drawImage(playerImage, x, y, SIZE, SIZE, null);
+            } else {
+                g.setColor(Color.RED);
+                g.fillRect(x, y, SIZE, SIZE);
+            }
+
+            // 히트박스 그리기 (투명한 히트박스는 그리지 않음)
+            hitbox.draw(g);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            player frame = new player();
-            frame.setVisible(true);
-        });
     }
 }
