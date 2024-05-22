@@ -1,3 +1,4 @@
+
 package player;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import status_basis.RectangleHitbox;
 import status_basis.TransparentHitbox;
 import stage.Map_bg;
 
-public class Player extends JFrame {
+public class Player extends JPanel {
 
     private int x = 50;
     private int y = 50;
@@ -25,11 +26,6 @@ public class Player extends JFrame {
     private BufferedImage playerImage;
 
     public Player() {
-        setTitle("캐릭터 움직임 구현");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
         // 이미지 로드
         Map_bg mapBg = new Map_bg();
         backgroundImage = mapBg.getImage();
@@ -40,15 +36,11 @@ public class Player extends JFrame {
         // 초기 히트박스 설정
         hitbox = new TransparentHitbox(x, y, SIZE, SIZE);
 
-        // JPanel 설정
-        DrawPanel drawPanel = new DrawPanel();
-        add(drawPanel);
-
         // KeyBindings 설정
-        setupKeyBindings(drawPanel);
+        setupKeyBindings();
 
         // Timer 설정 (이동을 부드럽게 하기 위해)
-        Timer timer = new Timer(15, e -> {
+        Timer timer = new Timer(10, e -> {
             if (upPressed) y = Math.max(y - MOVE_AMOUNT, 0);
             if (downPressed) y = Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
             if (leftPressed) x = Math.max(x - MOVE_AMOUNT, 0);
@@ -56,16 +48,16 @@ public class Player extends JFrame {
 
             // 히트박스 업데이트
             hitbox.setPosition(x, y);
-            drawPanel.repaint();
+            repaint();
         });
         timer.start();
 
         setFocusable(true);
     }
 
-    private void setupKeyBindings(JPanel panel) {
-        InputMap inputMap = panel.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = panel.getActionMap();
+    private void setupKeyBindings() {
+        InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = this.getActionMap();
 
         inputMap.put(KeyStroke.getKeyStroke("pressed W"), "upPressed");
         inputMap.put(KeyStroke.getKeyStroke("released W"), "upReleased");
@@ -126,26 +118,24 @@ public class Player extends JFrame {
         });
     }
 
-    private class DrawPanel extends JPanel {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-            // 배경 이미지 그리기
-            if (backgroundImage != null) {
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
-            }
-
-            // 캐릭터 이미지 그리기
-            if (playerImage != null) {
-                g.drawImage(playerImage, x, y, SIZE, SIZE, null);
-            } else {
-                g.setColor(Color.RED);
-                g.fillRect(x, y, SIZE, SIZE);
-            }
-
-            // 히트박스 그리기 (투명한 히트박스는 그리지 않음)
-            hitbox.draw(g);
+        // 배경 이미지 그리기
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
         }
+
+        // 캐릭터 이미지 그리기
+        if (playerImage != null) {
+            g.drawImage(playerImage, x, y, SIZE, SIZE, null);
+        } else {
+            g.setColor(Color.RED);
+            g.fillRect(x, y, SIZE, SIZE);
+        }
+
+        // 히트박스 그리기 (투명한 히트박스는 그리지 않음)
+        hitbox.draw(g);
     }
 }

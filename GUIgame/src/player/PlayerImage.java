@@ -15,7 +15,10 @@ public class PlayerImage {
             e.printStackTrace();
         }
     }
-
+    	
+    
+    //스프라이트 기법 활용하기
+    
     public BufferedImage getImage() {
         return image;
     }
