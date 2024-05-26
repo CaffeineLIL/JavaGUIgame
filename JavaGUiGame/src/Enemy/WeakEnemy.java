@@ -8,7 +8,7 @@ import java.util.Random;
 import status_basis.RectangleHitbox;
 import abstracts.abstractEnemy;
 import abstracts.abstractHitbox;
-import Enemy.WeakEnmyImage;
+import Enemy.WeakEnemyImage;
 
 public class WeakEnemy extends abstractEnemy {
 	
@@ -25,7 +25,7 @@ public class WeakEnemy extends abstractEnemy {
     public WeakEnemy(int playerX, int playerY) {
     	setOpaque(false);
     	hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
-    	WeakEnmyImage enemyimg = new WeakEnmyImage();
+    	WeakEnemyImage enemyimg = new WeakEnemyImage();
     	enemyImage = enemyimg.getImage();
     	
     	move(playerX, playerY);

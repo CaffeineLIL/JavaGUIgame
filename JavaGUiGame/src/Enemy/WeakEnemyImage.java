@@ -1,4 +1,4 @@
-package player;
+package Enemy;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
@@ -6,21 +6,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class PlayerImage {
-    private BufferedImage head_image;
+public class WeakEnemyImage {
     private BufferedImage body_image;
     private BufferedImage body_cropped;
     private BufferedImage image;
     private int imageX;
     private int imageY;
     private int imgindex = 0;
-    private final int[] changeImg = {0, 30, 60, 90, 120, 150, 180, 210, 240};
+    private final int[] changeImg = {0, 30, 60};
 
-    public PlayerImage() {
+    public WeakEnemyImage() {
         try {
-            head_image = ImageIO.read(new File("assets/maidlilpa/lilpaface_sp.png"));
-            body_image = ImageIO.read(new File("assets/maidlilpa/lilpadown_sp_strip10.png"));
-            
+            body_image = ImageIO.read(new File("assets/monster/enemy1/cutty.png"));
             cropBodyImage();
             combineImages();
         } catch (IOException e) {
@@ -30,7 +27,7 @@ public class PlayerImage {
 
     // 자른 body_image 부분을 image에 저장하고 반환합니다.
     public BufferedImage getImage() {
-        return image;
+        return scaleImage(image, 100, 100); // 필요한 크기로 조정
     }
 
     // body_image의 일부를 잘라냅니다.
@@ -43,17 +40,13 @@ public class PlayerImage {
 
     // 두 이미지를 합성하여 새로운 이미지를 생성합니다.
     private void combineImages() {
-        int combinedWidth = Math.max(head_image.getWidth(), body_cropped.getWidth());
-        int combinedHeight = head_image.getHeight() + body_cropped.getHeight(); 
+        int combinedWidth = body_cropped.getWidth();
+        int combinedHeight = body_cropped.getHeight(); 
         image = new BufferedImage(combinedWidth, combinedHeight, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = image.createGraphics();
-        g2d.drawImage(head_image, 0, 0, null); // head_image를 (0, 0)에 그립니다.
-        g2d.drawImage(body_cropped, 0, head_image.getHeight(), null); // body_cropped를 (0, head_image의 높이)에 그립니다.
+        g2d.drawImage(body_cropped, 0, 0, null); // body_cropped를 (0, 0)에 그립니다.
         g2d.dispose(); // 그래픽 객체를 제거합니다.
-
-        // 이미지 크기를 조정합니다.
-        image = scaleImage(image, 100, 190); // 원하는 크기로 변경
     }
 
     // 이미지 크기를 조정하는 메서드
@@ -65,16 +58,8 @@ public class PlayerImage {
         return scaledImage;
     }
 
-    public void moveInit() {
-        imageX = 0;
-        imageY = 0;
-        imgindex = 0;
-        cropBodyImage();
-        combineImages();
-    }
-
-    // 아래로 움직일 경우 이미지를 변경합니다.
-    public void moveDown() {
+    // 움직일 경우 이미지를 변경합니다.
+    public void move() {
         // x 좌표를 증가시키고 자를 부분을 다시 설정합니다.
         imageX = changeImg[imgindex++];
         

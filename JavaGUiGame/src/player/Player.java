@@ -15,7 +15,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private int hp = 10;
     private int x = 50;
     private int y = 50;
-    private final int SIZE = 100;
+    private final int SIZE = 100; // 여기서 원하는 크기로 변경
     private final int MOVE_AMOUNT = 6;
 
     private boolean upPressed = false;
@@ -71,7 +71,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
                 x = Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
                 playerImg.moveDown();
                 moved = true;
-            }	
+            }    
             if (!moved) {
                 playerImg.moveInit();
             }
