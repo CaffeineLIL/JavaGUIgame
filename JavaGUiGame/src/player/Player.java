@@ -15,7 +15,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private int hp = 10;
     private int x = 50;
     private int y = 50;
-    private final int SIZE = 50;
+    private final int SIZE = 100;
     private final int MOVE_AMOUNT = 6;
 
     private boolean upPressed = false;

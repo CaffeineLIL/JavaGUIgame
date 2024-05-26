@@ -13,6 +13,8 @@ public class PlayerImage {
     private BufferedImage image;
     private int imageX;
     private int imageY;
+    private int imgindex = 0;
+    int[] changeImg = {0, 30, 60, 90, 120, 150, 180, 210, 240};
 
     public PlayerImage() {
         try {
@@ -51,7 +53,7 @@ public class PlayerImage {
         g2d.dispose(); // 그래픽 객체를 제거합니다.
 
         // 이미지 크기를 조정합니다.
-        image = scaleImage(image, 50, 50); // 원하는 크기로 변경
+        image = scaleImage(image, 100, 100); // 원하는 크기로 변경
     }
 
     // 이미지 크기를 조정하는 메서드
@@ -73,9 +75,15 @@ public class PlayerImage {
     // 아래로 움직일 경우 이미지를 변경합니다.
     public void moveDown() {
         // x 좌표를 증가시키고 자를 부분을 다시 설정합니다.
-        imageX += 30;
+
+        imageX = changeImg[imgindex++];
+        
+        if(imgindex > 7)
+        	imgindex = 0;
+        
         if (imageX >= body_image.getWidth()) {
-            imageX = 0;
+        	imageX = 0;
+      
         }
         cropBodyImage();
         combineImages(); // 이동 후 이미지를 다시 합성합니다.
