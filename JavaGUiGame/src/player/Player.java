@@ -39,6 +39,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
         return y;
     }
     public Player() {
+    	setOpaque(false);
         PlayerImage playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
 
@@ -141,9 +142,12 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
         // 히트박스 그리기
         hitbox.draw(g);
-        
-       
+  
     }
+   
+    
+   
+}
     
 
-}
+

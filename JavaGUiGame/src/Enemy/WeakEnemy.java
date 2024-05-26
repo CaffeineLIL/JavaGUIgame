@@ -23,7 +23,7 @@ public class WeakEnemy extends abstractEnemy {
     private BufferedImage enemyImage;
     
     public WeakEnemy(int playerX, int playerY) {
-    	
+    	setOpaque(false);
     	hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
     	WeakEnmyImage enemyimg = new WeakEnmyImage();
     	enemyImage = enemyimg.getImage();
@@ -84,6 +84,7 @@ public class WeakEnemy extends abstractEnemy {
             System.out.println("히트박스 인식 오류: " + e.getMessage());
         }
     }
+    
     
     
 }

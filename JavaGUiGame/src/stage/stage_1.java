@@ -19,8 +19,8 @@ public class stage_1 extends JPanel{
 	    backgroundImage = mapBg.getImage();
 	    
 	    Player player = new Player();
-	    playerX = player.get_x();
-	    playerY = player.get_y();
+	    int playerX = player.getPlayerX();
+        int playerY = player.getPlayerY();
 	    
         add(player);
         
@@ -35,9 +35,14 @@ public class stage_1 extends JPanel{
 
 	        // 배경 이미지 그리기
 	        if (backgroundImage != null) {
-	            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+	            // 이미지를 JPanel에 꽉 차도록 그립니다.
+	            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 	        }
-	       
 	    }
-    
+	 
+	  @Override
+	    public Dimension getPreferredSize() {
+	        // JPanel의 크기를 JFrame과 동일하게 반환합니다.
+	        return new Dimension(1000, 600);
+	    }
 }

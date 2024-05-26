@@ -1,5 +1,7 @@
 package abstracts;
 import javax.swing.*;
+
+import java.awt.Dimension;
 import java.math.*;
 
 public abstract class abstractBasis extends JPanel{
@@ -11,5 +13,12 @@ public abstract class abstractBasis extends JPanel{
 		effectiveDamage = baseDmg * Math.sqrt(TotalDmgUps *1.2 + 1);
 		return effectiveDamage;
 	}
+	
+	
+    public Dimension getPreferredSize() {
+        // JPanel의 크기를 JFrame과 동일하게 반환합니다.
+        return new Dimension(1000, 600);
+       
+    }
 	
  }
