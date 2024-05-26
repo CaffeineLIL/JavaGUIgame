@@ -7,14 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
+import abstracts.abstractPlayer;
 import stage.Map_bg;
 
-public class Player extends JPanel {
+
+public class Player extends abstractPlayer {
     
     private int x = 50;
     private int y = 50;
     private final int SIZE = 50;
-    private final int MOVE_AMOUNT = 5;
+    private final int MOVE_AMOUNT = 6;
 
     private boolean upPressed = false;
     private boolean downPressed = false;
