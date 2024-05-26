@@ -11,10 +11,9 @@ import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
 import abstracts.abstractPlayer;
 
-
-
 public class Player extends abstractPlayer implements PlayerPositionProvider {
-    
+
+    private int hp = 10;
     private int x = 50;
     private int y = 50;
     private final int SIZE = 50;
@@ -27,7 +26,8 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
     private abstractHitbox hitbox;
     private BufferedImage playerImage;
-    
+    private PlayerImage playerImg;
+
     // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
     @Override
     public int getPlayerX() {
@@ -38,9 +38,10 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     public int getPlayerY() {
         return y;
     }
+
     public Player() {
-    	setOpaque(false);
-        PlayerImage playerImg = new PlayerImage();
+        setOpaque(false);
+        playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
 
         // 초기 히트박스 설정
@@ -51,10 +52,29 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
         // Timer 설정 (이동을 부드럽게 하기 위해)
         Timer timer = new Timer(10, e -> {
-            if (upPressed) y = Math.max(y - MOVE_AMOUNT, 0);
-            if (downPressed) y = Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
-            if (leftPressed) x = Math.max(x - MOVE_AMOUNT, 0);
-            if (rightPressed) x = Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
+            boolean moved = false;
+            if (upPressed) {
+                y = Math.max(y - MOVE_AMOUNT, 0);
+                moved = true;
+            }
+            if (downPressed) {
+                y = Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
+                playerImg.moveDown();
+                moved = true;
+            }
+            if (leftPressed) {
+                x = Math.max(x - MOVE_AMOUNT, 0);
+                moved = true;
+            }
+            if (rightPressed) {
+                x = Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
+                moved = true;
+            }
+            if (!moved) {
+                playerImg.moveInit();
+            }
+
+            playerImage = playerImg.getImage(); // Update playerImage after moveDown or moveInit
 
             // 히트박스 업데이트
             hitbox.setPosition(x, y);
@@ -131,7 +151,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         // 캐릭터 이미지 그리기
         if (playerImage != null) {
             g.drawImage(playerImage, x, y, SIZE, SIZE, null);
@@ -142,12 +162,5 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
         // 히트박스 그리기
         hitbox.draw(g);
-  
     }
-   
-    
-   
 }
-    
-
-
