@@ -3,6 +3,7 @@ package Enemy;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import status_basis.RectangleHitbox;
 import abstracts.abstractEnemy;
@@ -26,13 +27,40 @@ public class WeakEnemy extends abstractEnemy {
     	WeakEnmyImage enemyimg = new WeakEnmyImage();
     	enemyImage = enemyimg.getImage();
     	
+    	move(playerX, playerY);
     	repaint();
     	
     	hitbox.setPosition(x, y);
     }
     
-    public void move(int playerX, int playerY) {
-    	
+ // 적을 이동시키는 메서드
+    public void move(int PlayerX, int PlayerY) {
+        // 현재 위치와 목표 위치 간의 이동 벡터 계산
+        double dx = PlayerX - x;
+        double dy = PlayerY - y;
+
+        // 이동 벡터의 크기 계산
+        double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
+
+        // 이동 벡터의 크기가 이동 속도보다 작으면 목표 위치에 도달한 것으로 간주
+        if (distanceToTarget <= MOVE_AMOUNT) {
+            x = PlayerX;
+            y = PlayerY;
+        } else {
+            // 이동 속도에 맞춰 이동 벡터를 스케일링하여 현재 위치에 추가
+            double scale = MOVE_AMOUNT / distanceToTarget;
+            x += dx * scale;
+            y += dy * scale;
+        }
+    }
+    
+    // 적의 위치를 반환하는 메서드
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
     
     @Override
@@ -41,7 +69,8 @@ public class WeakEnemy extends abstractEnemy {
         
         // 캐릭터 이미지 그리기
         g.setColor(Color.WHITE);
-        g.fillRect(50, 50, 200, 150); // 좌표 및 크기는 필요에 맞게 조정
+        
+        g.fillRect(x, y, 200, 150); // 좌표 및 크기는 필요에 맞게 조정
         
         // 히트박스 그리기 (예외 처리 추가)
         try {

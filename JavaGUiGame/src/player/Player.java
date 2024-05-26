@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
 import abstracts.abstractPlayer;
-import stage.Map_bg;
+
 
 
 public class Player extends abstractPlayer {
@@ -24,14 +24,16 @@ public class Player extends abstractPlayer {
     private boolean rightPressed = false;
 
     private abstractHitbox hitbox;
-    private BufferedImage backgroundImage;
     private BufferedImage playerImage;
-
+    
+    public int get_x() {
+    	return x;
+    }
+    public int get_y() {
+    	return y;
+    }
+    
     public Player() {
-        // 이미지 로드
-        Map_bg mapBg = new Map_bg();
-        backgroundImage = mapBg.getImage();
-
         PlayerImage playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
 
