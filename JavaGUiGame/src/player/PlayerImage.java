@@ -33,9 +33,6 @@ public class PlayerImage {
 
     // body_image의 일부를 잘라냅니다.
     private void cropBodyImage() {
-        // 자를 부분의 시작 x, y 좌표를 설정
-        imageX = 0;
-        imageY = 0;
         // 자를 부분의 크기가 원본 이미지의 범위를 벗어나지 않도록 조절
         int width = Math.min(30, body_image.getWidth() - imageX);
         int height = Math.min(30, body_image.getHeight() - imageY);
@@ -51,27 +48,36 @@ public class PlayerImage {
         Graphics2D g2d = image.createGraphics();
         g2d.drawImage(head_image, 0, 0, null); // head_image를 (0, 0)에 그립니다.
         g2d.drawImage(body_cropped, 0, head_image.getHeight(), null); // body_cropped를 (0, head_image의 높이)에 그립니다.
-        g2d.dispose(); // 그래픽 객체를 제거합니다.+
+        g2d.dispose(); // 그래픽 객체를 제거합니다.
+
+        // 이미지 크기를 조정합니다.
+        image = scaleImage(image, 50, 50); // 원하는 크기로 변경
+    }
+
+    // 이미지 크기를 조정하는 메서드
+    private BufferedImage scaleImage(BufferedImage originalImage, int width, int height) {
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = scaledImage.createGraphics();
+        g2d.drawImage(originalImage, 0, 0, width, height, null);
+        g2d.dispose();
+        return scaledImage;
     }
 
     public void moveInit() {
         imageX = 0;
         imageY = 0;
-        int width = Math.min(30, body_image.getWidth() - imageX);
-        int height = Math.min(30, body_image.getHeight() - imageY);
-        body_cropped = body_image.getSubimage(imageX, imageY, width, height);
+        cropBodyImage();
         combineImages();
     }
 
     // 아래로 움직일 경우 이미지를 변경합니다.
     public void moveDown() {
-        // x, y 좌표를 증가시키고 자를 부분을 다시 설정합니다.
+        // x 좌표를 증가시키고 자를 부분을 다시 설정합니다.
         imageX += 30;
         if (imageX >= body_image.getWidth()) {
             imageX = 0;
         }
-        int width = Math.min(body_image.getWidth() - imageX , 30 );
-        body_cropped = body_image.getSubimage(imageX, imageY, width, 30);
+        cropBodyImage();
         combineImages(); // 이동 후 이미지를 다시 합성합니다.
     }
 }

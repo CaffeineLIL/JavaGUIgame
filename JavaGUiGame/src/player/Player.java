@@ -1,4 +1,3 @@
-// File: player/Player.java
 package player;
 
 import javax.swing.*;
@@ -55,6 +54,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             boolean moved = false;
             if (upPressed) {
                 y = Math.max(y - MOVE_AMOUNT, 0);
+                playerImg.moveDown();
                 moved = true;
             }
             if (downPressed) {
@@ -64,12 +64,14 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             }
             if (leftPressed) {
                 x = Math.max(x - MOVE_AMOUNT, 0);
+                playerImg.moveDown();
                 moved = true;
             }
             if (rightPressed) {
                 x = Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
+                playerImg.moveDown();
                 moved = true;
-            }
+            }	
             if (!moved) {
                 playerImg.moveInit();
             }
