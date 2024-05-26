@@ -2,7 +2,7 @@
 package core;
 
 import javax.swing.*;
-import player.Player;
+import stage.stage_1;
 
 public class Main extends JFrame {
     public Main() {
@@ -12,9 +12,9 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
        
-
-        Player player = new Player();
-        add(player);
+        stage_1 stage1 = new stage_1();
+        add(stage1);
+        
     }
 
     public static void main(String[] args) {

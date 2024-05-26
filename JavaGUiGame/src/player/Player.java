@@ -5,16 +5,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+
+import abstracts.PlayerPositionProvider;
 import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
-import stage.Map_bg;
+import abstracts.abstractPlayer;
 
-public class Player extends JPanel {
+
+
+public class Player extends abstractPlayer implements PlayerPositionProvider {
     
     private int x = 50;
     private int y = 50;
     private final int SIZE = 50;
-    private final int MOVE_AMOUNT = 5;
+    private final int MOVE_AMOUNT = 6;
 
     private boolean upPressed = false;
     private boolean downPressed = false;
@@ -22,14 +26,20 @@ public class Player extends JPanel {
     private boolean rightPressed = false;
 
     private abstractHitbox hitbox;
-    private BufferedImage backgroundImage;
     private BufferedImage playerImage;
+    
+    // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
+    @Override
+    public int getPlayerX() {
+        return x;
+    }
 
+    @Override
+    public int getPlayerY() {
+        return y;
+    }
     public Player() {
-        // 이미지 로드
-        Map_bg mapBg = new Map_bg();
-        backgroundImage = mapBg.getImage();
-
+    	setOpaque(false);
         PlayerImage playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
 
@@ -121,12 +131,7 @@ public class Player extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // 배경 이미지 그리기
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
-        }
-
+        
         // 캐릭터 이미지 그리기
         if (playerImage != null) {
             g.drawImage(playerImage, x, y, SIZE, SIZE, null);
@@ -137,7 +142,12 @@ public class Player extends JPanel {
 
         // 히트박스 그리기
         hitbox.draw(g);
-        
-       
+  
     }
+   
+    
+   
 }
+    
+
+
