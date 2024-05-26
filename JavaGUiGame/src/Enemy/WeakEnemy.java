@@ -24,13 +24,14 @@ public class WeakEnemy extends abstractEnemy {
     
     public WeakEnemy(int playerX, int playerY) {
     	
+    	hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
     	WeakEnmyImage enemyimg = new WeakEnmyImage();
     	enemyImage = enemyimg.getImage();
     	
     	move(playerX, playerY);
+    	hitbox.setPosition(x, y);
     	repaint();
     	
-    	hitbox.setPosition(x, y);
     }
     
  // 적을 이동시키는 메서드

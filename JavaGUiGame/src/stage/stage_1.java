@@ -25,7 +25,19 @@ public class stage_1 extends JPanel{
         add(player);
         
         WeakEnemy en1 = new WeakEnemy(playerX, playerY);
+        add(en1);
 	    
 	}
+	
+	 @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+
+	        // 배경 이미지 그리기
+	        if (backgroundImage != null) {
+	            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+	        }
+	       
+	    }
     
 }

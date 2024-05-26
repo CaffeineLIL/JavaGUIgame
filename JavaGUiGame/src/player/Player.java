@@ -5,13 +5,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+
+import abstracts.PlayerPositionProvider;
 import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
 import abstracts.abstractPlayer;
 
 
 
-public class Player extends abstractPlayer {
+public class Player extends abstractPlayer implements PlayerPositionProvider {
     
     private int x = 50;
     private int y = 50;
@@ -26,13 +28,16 @@ public class Player extends abstractPlayer {
     private abstractHitbox hitbox;
     private BufferedImage playerImage;
     
-    public int get_x() {
-    	return x;
+    // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
+    @Override
+    public int getPlayerX() {
+        return x;
     }
-    public int get_y() {
-    	return y;
+
+    @Override
+    public int getPlayerY() {
+        return y;
     }
-    
     public Player() {
         PlayerImage playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
@@ -125,12 +130,7 @@ public class Player extends abstractPlayer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // 배경 이미지 그리기
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
-        }
-
+        
         // 캐릭터 이미지 그리기
         if (playerImage != null) {
             g.drawImage(playerImage, x, y, SIZE, SIZE, null);
@@ -144,4 +144,6 @@ public class Player extends abstractPlayer {
         
        
     }
+    
+
 }
