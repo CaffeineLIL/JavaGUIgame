@@ -21,6 +21,7 @@ public class PlayerImage {
             head_image = ImageIO.read(new File("assets/maidlilpa/lilpaface_sp.png"));
             body_image = ImageIO.read(new File("assets/maidlilpa/lilpadown_sp_strip10.png"));
             
+            
             cropBodyImage();
             combineImages();
         } catch (IOException e) {
