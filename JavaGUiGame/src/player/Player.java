@@ -17,7 +17,9 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private int y = 50;
     private final int SIZE = 100; // 여기서 원하는 크기로 변경
     private final int MOVE_AMOUNT = 6;
-
+    private boolean alive = true;
+    
+    
     private boolean upPressed = false;
     private boolean downPressed = false;
     private boolean leftPressed = false;
@@ -37,11 +39,18 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     public int getPlayerY() {
         return y;
     }
-
+    
+    public boolean player_isalive() {
+    	if(hp < 0)
+    		alive = false;
+    	return alive;
+    }
     public Player() {
         setOpaque(false);
         playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
+        
+       
 
         // 초기 히트박스 설정
         hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
@@ -163,6 +172,6 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
         }
 
         // 히트박스 그리기
-        hitbox.draw(g);
+        //hitbox.draw(g);
     }
 }

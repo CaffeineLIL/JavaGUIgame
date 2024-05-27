@@ -1,6 +1,5 @@
 package Enemy;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import abstracts.abstractEnemy;
@@ -8,7 +7,7 @@ import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
 
 public class WeakEnemy extends abstractEnemy {
-    private int hp = 10;
+    private double hp = setHp();
     private int x = 200;
     private int y = 200;
     private final int SIZE = 50;
@@ -16,37 +15,48 @@ public class WeakEnemy extends abstractEnemy {
     private abstractHitbox hitbox;
     private BufferedImage enemyImage;
     private WeakEnemyImage enemyImg;
+    
+    private int playerX; // 플레이어의 X 좌표
+    private int playerY; // 플레이어의 Y 좌표
 
     public WeakEnemy(int playerX, int playerY) {
         setOpaque(false);
         hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
         enemyImg = new WeakEnemyImage();
         enemyImage = enemyImg.getImage();
-
-        move(playerX, playerY);
-        hitbox.setPosition(x, y);
-        repaint();
+        this.playerX = playerX;
+        this.playerY = playerY;
+    }
+    
+    // 플레이어의 위치를 업데이트하는 메서드
+    public void setPlayerPosition(int playerX, int playerY) {
+        this.playerX = playerX;
+        this.playerY = playerY;
     }
 
     // 적을 이동시키는 메서드
-    public void move(int PlayerX, int PlayerY) {
+    @Override
+    public void move() {
         // 현재 위치와 목표 위치 간의 이동 벡터 계산
-        double dx = PlayerX - x;
-        double dy = PlayerY - y;
+        double dx = playerX - x;
+        double dy = playerY - y;
 
         // 이동 벡터의 크기 계산
         double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
 
         // 이동 벡터의 크기가 이동 속도보다 작으면 목표 위치에 도달한 것으로 간주
         if (distanceToTarget <= MOVE_AMOUNT) {
-            x = PlayerX;
-            y = PlayerY;
+            x = playerX;
+            y = playerY;
         } else {
             // 이동 속도에 맞춰 이동 벡터를 스케일링하여 현재 위치에 추가
             double scale = MOVE_AMOUNT / distanceToTarget;
             x += dx * scale;
             y += dy * scale;
         }
+        
+        // JPanel을 다시 그려서 적의 위치를 갱신합니다.
+        repaint();
     }
 
     // 적의 위치를 반환하는 메서드
@@ -56,6 +66,11 @@ public class WeakEnemy extends abstractEnemy {
 
     public int getY() {
         return y;
+    }
+    
+    // 적의 체력 반환 메서드
+    public double getEnHp() {
+        return hp;
     }
 
     @Override
@@ -70,7 +85,7 @@ public class WeakEnemy extends abstractEnemy {
         // 히트박스 그리기 (예외 처리 추가)
         try {
             if (hitbox != null) {
-                hitbox.draw(g);
+                //hitbox.draw(g);
             } else {
                 throw new RuntimeException("히트박스가 초기화되지 않았습니다.");
             }
