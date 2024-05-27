@@ -7,21 +7,20 @@ import javax.swing.*;
 import abstracts.abstractImage;
 
 public class UI extends abstractImage {
-    JPanel uiPanel, TopPanel, hpPanel; 
-    JLabel Fullhp_1, Fullhp_2, Fullhp_3;
+	JPanel uiPanel, TopPanel, hpPanel; 
+    JLabel[] hpLabels;
 
-    public UI() {
+    public UI(int hp) {
         super("assets/UI/UI_Sprite-0001.png");
-        initUI();
+        initUI(hp);
     }
 
-    public void initUI() {
+    public void initUI(int hp) {
         // 메인 UI 패널 생성
         uiPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                // 배경을 투명하게 설정
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setComposite(AlphaComposite.SrcOver.derive(0f));
                 g2d.setColor(getBackground());
@@ -48,27 +47,20 @@ public class UI extends abstractImage {
         TopPanel.setOpaque(false);
 
         // hp 표시할 패널 생성
-        hpPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setComposite(AlphaComposite.SrcOver.derive(0f));
-                g2d.setColor(getBackground());
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-                g2d.dispose();
-            }
-        };
-        hpPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        hpPanel = new JPanel();
         hpPanel.setOpaque(false);
 
-        Fullhp_1 = new JLabel(new ImageIcon(images.get("full_hp")));
-        Fullhp_2 = new JLabel(new ImageIcon(images.get("full_hp")));
-        Fullhp_3 = new JLabel(new ImageIcon(images.get("full_hp")));
+        // HP 레이블 생성
+        hpLabels = new JLabel[4];
+        for (int i = 0; i < hpLabels.length; i++) {
+            hpLabels[i] = new JLabel(new ImageIcon(images.get("full_hp")));
+            hpPanel.add(hpLabels[i]);
+        }
 
-        hpPanel.add(Fullhp_1);
-        hpPanel.add(Fullhp_2);
-        hpPanel.add(Fullhp_3);
+        // HP에 따라 빈 하트 표시
+        for (int i = hp; i < hpLabels.length; i++) {
+            hpLabels[i].setIcon(new ImageIcon(images.get("empty_hp")));
+        }
 
         // TopPanel에 hpPanel을 추가
         TopPanel.add(hpPanel, BorderLayout.WEST);
