@@ -21,11 +21,12 @@ public class stage_1 extends JPanel{
 	    Player player = new Player();
 	    int playerX = player.getPlayerX();
         int playerY = player.getPlayerY();
+        
 	    
         add(player);
         
-        WeakEnemy en1 = new WeakEnemy(playerX, playerY);
-        add(en1);
+        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
+        add(enemy_1);
 	    
 	}
 	
