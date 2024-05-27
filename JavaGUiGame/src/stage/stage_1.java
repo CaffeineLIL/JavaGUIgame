@@ -21,11 +21,12 @@ public class stage_1 extends JPanel{
 	    Player player = new Player();
 	    int playerX = player.getPlayerX();
         int playerY = player.getPlayerY();
+        
 	    
         add(player);
         
-        WeakEnemy en1 = new WeakEnemy(playerX, playerY);
-        add(en1);
+        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
+        add(enemy_1);
 	    
 	}
 	
@@ -43,6 +44,6 @@ public class stage_1 extends JPanel{
 	  @Override
 	    public Dimension getPreferredSize() {
 	        // JPanel의 크기를 JFrame과 동일하게 반환합니다.
-	        return new Dimension(1000, 600);
+	        return new Dimension(1100, 700);
 	    }
 }
