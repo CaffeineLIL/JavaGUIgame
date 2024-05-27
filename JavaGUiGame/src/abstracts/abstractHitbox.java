@@ -4,11 +4,11 @@ package abstracts;
 import java.awt.Graphics;
 
 public abstract class abstractHitbox {
-    protected int x, y, width, height;
+    protected double x, y, width, height;
 
-    public abstractHitbox(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
+    public abstractHitbox(double x2, double y2, int width, int height) {
+        this.x = x2;
+        this.y = y2;
         this.width = width;
         this.height = height;
     }
@@ -25,19 +25,19 @@ public abstract class abstractHitbox {
         this.y = y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 }
