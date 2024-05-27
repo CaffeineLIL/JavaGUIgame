@@ -61,8 +61,8 @@ public class stage_1 extends JPanel {
         g2d.fillRect(80, 520, 1000, 50);
         
         //왼쪽, 오른쪽
-        g2d.fillRect(40, 20, 50, 500); 
-        g2d.fillRect(1005, 20, 50, 500); 
+        g2d.fillRect(40, 20, 50, 600); 
+        g2d.fillRect(1005, 20, 50, 600); 
         // 필요한 만큼 더 많은 사각형을 추가하여 벽을 만듭니다.
     }
     
