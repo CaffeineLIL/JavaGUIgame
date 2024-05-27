@@ -11,4 +11,8 @@ public abstract class abstractPlayer extends abstractBasis {
 		effectiveDmg = baseATK * Math.sqrt(totalDmgup * 1.2 + 1) + FlatDmgup;
 		return effectiveDmg;
 	}
+	
+	public double getHP() {
+		return HP;
+	}
 }
