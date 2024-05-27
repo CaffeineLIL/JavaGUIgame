@@ -44,6 +44,6 @@ public class stage_1 extends JPanel{
 	  @Override
 	    public Dimension getPreferredSize() {
 	        // JPanel의 크기를 JFrame과 동일하게 반환합니다.
-	        return new Dimension(1000, 600);
+	        return new Dimension(1100, 700);
 	    }
 }
