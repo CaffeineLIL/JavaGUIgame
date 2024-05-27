@@ -24,17 +24,17 @@ public class WeakEnemy extends abstractEnemy {
         hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
         enemyImg = new WeakEnemyImage();
         enemyImage = enemyImg.getImage();
-        
-        
-        this.playerX = playerX; // 플레이어의 X 좌표 설정
-        this.playerY = playerY; // 플레이어의 Y 좌표 설정
-        
-        move(); // 적의 이동 메서드 호출
-        hitbox.setPosition(x, y);
-        repaint();
+        this.playerX = playerX;
+        this.playerY = playerY;
     }
     
- // 적을 이동시키는 메서드
+    // 플레이어의 위치를 업데이트하는 메서드
+    public void setPlayerPosition(int playerX, int playerY) {
+        this.playerX = playerX;
+        this.playerY = playerY;
+    }
+
+    // 적을 이동시키는 메서드
     @Override
     public void move() {
         // 현재 위치와 목표 위치 간의 이동 벡터 계산
@@ -59,7 +59,6 @@ public class WeakEnemy extends abstractEnemy {
         repaint();
     }
 
-
     // 적의 위치를 반환하는 메서드
     public int getX() {
         return x;
@@ -69,9 +68,9 @@ public class WeakEnemy extends abstractEnemy {
         return y;
     }
     
-    //적의 체력 반환 메서드
+    // 적의 체력 반환 메서드
     public double getEnHp() {
-    	return hp;
+        return hp;
     }
 
     @Override
@@ -86,7 +85,7 @@ public class WeakEnemy extends abstractEnemy {
         // 히트박스 그리기 (예외 처리 추가)
         try {
             if (hitbox != null) {
-                hitbox.draw(g);
+                //hitbox.draw(g);
             } else {
                 throw new RuntimeException("히트박스가 초기화되지 않았습니다.");
             }

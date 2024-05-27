@@ -5,41 +5,37 @@ import player.Player;
 import Enemy.WeakEnemy;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.awt.event.ActionListener;
-
-import stage.Map_bg;
+import java.awt.image.BufferedImage;
 
 public class stage_1 extends JPanel {
     private BufferedImage backgroundImage;
-    private int playerX, playerY;
-    private double enemy1_hp;
-    private boolean EnemyAlive = true;
+    private Player player;
+    private WeakEnemy enemy_1;
+    private Timer timer;
 
     public stage_1() {
         // 이미지 로드
         Map_bg mapBg = new Map_bg();
         backgroundImage = mapBg.getImage();
-        
-        Player player = new Player();
-        playerX = player.getPlayerX();
-        playerY = player.getPlayerY();
-        
+
+        player = new Player();
         add(player);
-        
-        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
-        enemy1_hp = enemy_1.getEnHp();
+
+        enemy_1 = new WeakEnemy(player.getPlayerX(), player.getPlayerY());
         add(enemy_1);
-        
-        Timer timer = new Timer(30, new ActionListener() {
+
+        // Timer 설정 (플레이어와 적의 움직임을 갱신하기 위해)
+        timer = new Timer(30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (enemy_1.getEnHp() > 0) {
+                if (player.player_isalive()) {
+                    enemy_1.setPlayerPosition(player.getPlayerX(), player.getPlayerY());
                     enemy_1.move();
                     enemy_1.repaint();
                 } else {
-                    // 적이 죽었을 때 타이머 멈추기
-                    ((Timer)e.getSource()).stop();
+                    // 플레이어가 죽으면 타이머 멈추기
+                    timer.stop();
                 }
             }
         });
