@@ -111,14 +111,14 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
         inputMap.put(KeyStroke.getKeyStroke("released D"), "rightReleased");
 
      // 화살표 방향키 추가
-        inputMap.put(KeyStroke.getKeyStroke("pressed UP"), "upPressed");
-        inputMap.put(KeyStroke.getKeyStroke("released UP"), "upReleased");
-        inputMap.put(KeyStroke.getKeyStroke("pressed DOWN"), "downPressed");
-        inputMap.put(KeyStroke.getKeyStroke("released DOWN"), "downReleased");
-        inputMap.put(KeyStroke.getKeyStroke("pressed LEFT"), "leftPressed");
-        inputMap.put(KeyStroke.getKeyStroke("released LEFT"), "leftReleased");
-        inputMap.put(KeyStroke.getKeyStroke("pressed RIGHT"), "rightPressed");
-        inputMap.put(KeyStroke.getKeyStroke("released RIGHT"), "rightReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed UP"), "upkeyPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released UP"), "upkeyReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed DOWN"), "downkeyPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released DOWN"), "downkeyReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed LEFT"), "leftkeyPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released LEFT"), "leftkeyReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed RIGHT"), "rightkeyPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released RIGHT"), "rightkeyReleased");
         
         actionMap.put("upPressed", new AbstractAction() {
             @Override

@@ -15,6 +15,7 @@ public class stage_1 extends JPanel {
     private double playerX, playerY; // 변경: int -> double
     private double enemy1_hp;
     private boolean EnemyAlive = true;
+    Timer timer;
 
     ArrayList<WeakEnemy> Enemy = new ArrayList<>();
 
@@ -34,14 +35,16 @@ public class stage_1 extends JPanel {
         add(enemy_1);
 
         // 타이머 설정 (적의 이동을 주기적으로 업데이트하기 위해)
-        Timer timer = new Timer(50, new ActionListener() {
+         timer = new Timer(30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (player.player_isalive()) {
+                if (player.player_isalive() && EnemyAlive == true) {
                     enemy_1.setPlayerPosition(player.getPlayerX(), player.getPlayerY());
                     enemy_1.move();
                     enemy_1.repaint();
-                } else {
+                }
+               
+                else {
                     // 플레이어가 죽으면 타이머 멈추기
                 	timer.stop();
                 }
