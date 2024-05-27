@@ -1,32 +1,40 @@
 package stage;
-
 import javax.swing.*;
+
 import player.Player;
 import Enemy.WeakEnemy;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class stage_1 extends JPanel {
     private BufferedImage backgroundImage;
-    private Player player;
-    private WeakEnemy enemy_1;
-    private Timer timer;
+    private double playerX, playerY; // 변경: int -> double
+    private double enemy1_hp;
+    private boolean EnemyAlive = true;
+
+    ArrayList<WeakEnemy> Enemy = new ArrayList<>();
 
     public stage_1() {
         // 이미지 로드
         Map_bg mapBg = new Map_bg();
         backgroundImage = mapBg.getImage();
 
-        player = new Player();
+        Player player = new Player();
+        playerX = player.getPlayerX();
+        playerY = player.getPlayerY();
+
         add(player);
 
-        enemy_1 = new WeakEnemy(player.getPlayerX(), player.getPlayerY());
+        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
+        enemy1_hp = enemy_1.getenHp();
         add(enemy_1);
 
-        // Timer 설정 (플레이어와 적의 움직임을 갱신하기 위해)
-        timer = new Timer(30, new ActionListener() {
+        // 타이머 설정 (적의 이동을 주기적으로 업데이트하기 위해)
+        Timer timer = new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (player.player_isalive()) {
@@ -35,7 +43,7 @@ public class stage_1 extends JPanel {
                     enemy_1.repaint();
                 } else {
                     // 플레이어가 죽으면 타이머 멈추기
-                    timer.stop();
+                	timer.stop();
                 }
             }
         });

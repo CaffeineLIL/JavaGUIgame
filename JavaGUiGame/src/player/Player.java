@@ -13,10 +13,10 @@ import abstracts.abstractPlayer;
 public class Player extends abstractPlayer implements PlayerPositionProvider {
 
 	private double hp = getHP();
-    private int x = 50;
-    private int y = 50;
+    private double x = 50;
+    private double y = 50;
     private final int SIZE = 100; // 여기서 원하는 크기로 변경
-    private final int MOVE_AMOUNT = 6;
+    private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
     
     
@@ -31,12 +31,12 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
     // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
     @Override
-    public int getPlayerX() {
+    public double getPlayerX() {
         return x;
     }
 
     @Override
-    public int getPlayerY() {
+    public double getPlayerY() {
         return y;
     }
     
@@ -88,14 +88,15 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             playerImage = playerImg.getImage(); // Update playerImage after moveDown or moveInit
 
             // 히트박스 업데이트
-            hitbox.setPosition(x, y);
+            hitbox.setPosition((int)x, (int)y);
             repaint();
         });
         timer.start();
 
         setFocusable(true);
     }
-
+    
+    //플레이어 키보드 바인딩 할당
     private void setupKeyBindings() {
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
@@ -109,6 +110,16 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
         inputMap.put(KeyStroke.getKeyStroke("pressed D"), "rightPressed");
         inputMap.put(KeyStroke.getKeyStroke("released D"), "rightReleased");
 
+     // 화살표 방향키 추가
+        inputMap.put(KeyStroke.getKeyStroke("pressed UP"), "upPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released UP"), "upReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed DOWN"), "downPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released DOWN"), "downReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed LEFT"), "leftPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released LEFT"), "leftReleased");
+        inputMap.put(KeyStroke.getKeyStroke("pressed RIGHT"), "rightPressed");
+        inputMap.put(KeyStroke.getKeyStroke("released RIGHT"), "rightReleased");
+        
         actionMap.put("upPressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,10 +176,10 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
         // 캐릭터 이미지 그리기
         if (playerImage != null) {
-            g.drawImage(playerImage, x, y, SIZE, SIZE, null);
+            g.drawImage(playerImage, (int)x, (int)y, (int)SIZE, (int)SIZE, null);
         } else {
             g.setColor(Color.RED);
-            g.fillRect(x, y, SIZE, SIZE);
+            g.fillRect((int)x, (int)y, (int)SIZE, (int)SIZE);
         }
 
         // 히트박스 그리기

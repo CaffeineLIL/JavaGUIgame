@@ -8,33 +8,36 @@ import status_basis.RectangleHitbox;
 
 public class WeakEnemy extends abstractEnemy {
     private double hp = setHp();
-    private int x = 200;
-    private int y = 200;
+    private double x = 200; // 변경: int -> double
+    private double y = 200; // 변경: int -> double
     private final int SIZE = 50;
-    private final int MOVE_AMOUNT = 3;
+    private final double MOVE_AMOUNT = 3.0; // 변경: int -> double
     private abstractHitbox hitbox;
     private BufferedImage enemyImage;
     private WeakEnemyImage enemyImg;
     
-    private int playerX; // 플레이어의 X 좌표
-    private int playerY; // 플레이어의 Y 좌표
+    private double playerX; // 변경: int -> double
+    private double playerY; // 변경: int -> double
 
-    public WeakEnemy(int playerX, int playerY) {
+    public double getenHp() {
+    	return hp;
+    }
+    
+    public WeakEnemy(double playerX, double playerY) { // 변경: int -> double
         setOpaque(false);
-        hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
+        hitbox = new RectangleHitbox((int) x, (int) y, SIZE, SIZE);
         enemyImg = new WeakEnemyImage();
         enemyImage = enemyImg.getImage();
+        
         this.playerX = playerX;
         this.playerY = playerY;
     }
     
-    // 플레이어의 위치를 업데이트하는 메서드
-    public void setPlayerPosition(int playerX, int playerY) {
+    public void setPlayerPosition(double playerX, double playerY) { // 변경: int -> double
         this.playerX = playerX;
         this.playerY = playerY;
     }
 
-    // 적을 이동시키는 메서드
     @Override
     public void move() {
         // 현재 위치와 목표 위치 간의 이동 벡터 계산
@@ -44,8 +47,8 @@ public class WeakEnemy extends abstractEnemy {
         // 이동 벡터의 크기 계산
         double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
 
-        // 이동 벡터의 크기가 이동 속도보다 작으면 목표 위치에 도달한 것으로 간주
-        if (distanceToTarget <= MOVE_AMOUNT) {
+        // 적과 플레이어의 좌표가 일치하면 목표 위치에 도달한 것으로 간주
+        if (distanceToTarget <= MOVE_AMOUNT || (int) x == (int) playerX && (int) y == (int) playerY) {
             x = playerX;
             y = playerY;
         } else {
@@ -55,17 +58,18 @@ public class WeakEnemy extends abstractEnemy {
             y += dy * scale;
         }
         
-        // JPanel을 다시 그려서 적의 위치를 갱신합니다.
+        // 히트박스 업데이트
+        hitbox.setPosition((int) x, (int) y);
         repaint();
     }
 
     // 적의 위치를 반환하는 메서드
     public int getX() {
-        return x;
+        return (int)x;
     }
 
     public int getY() {
-        return y;
+        return (int)y;
     }
     
     // 적의 체력 반환 메서드
@@ -79,7 +83,7 @@ public class WeakEnemy extends abstractEnemy {
 
         // 캐릭터 이미지 그리기
         if (enemyImage != null) {
-            g.drawImage(enemyImage, x, y, SIZE, SIZE, null);
+            g.drawImage(enemyImage, (int) x, (int) y, (int)SIZE, (int)SIZE, null);
         }
 
         // 히트박스 그리기 (예외 처리 추가)
