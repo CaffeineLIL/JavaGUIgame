@@ -10,6 +10,7 @@ import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
 import abstracts.abstractPlayer;
 
+
 public class Player extends abstractPlayer implements PlayerPositionProvider {
 
 	private double hp = getHP();
@@ -28,6 +29,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private abstractHitbox hitbox;
     private BufferedImage playerImage;
     private PlayerImage playerImg;
+   
 
     // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
     @Override
@@ -81,6 +83,10 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
                 playerImg.moveDown();
                 moved = true;
             }    
+            if(moved) {
+            	// 플레이어의 위치를 전달
+            	
+            }
             if (!moved) {
                 playerImg.moveInit();
             }
@@ -95,7 +101,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
         setFocusable(true);
     }
-    
+ 
     //플레이어 키보드 바인딩 할당
     private void setupKeyBindings() {
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);

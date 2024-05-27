@@ -11,7 +11,7 @@ public class WeakEnemy extends abstractEnemy {
     private double x = 200; // 변경: int -> double
     private double y = 200; // 변경: int -> double
     private final int SIZE = 50;
-    private final double MOVE_AMOUNT = 3.0; // 변경: int -> double
+    private final double MOVE_AMOUNT = 3; // 변경: int -> double
     private abstractHitbox hitbox;
     private BufferedImage enemyImage;
     private WeakEnemyImage enemyImg;
@@ -40,24 +40,32 @@ public class WeakEnemy extends abstractEnemy {
 
     @Override
     public void move() {
-        // 현재 위치와 목표 위치 간의 이동 벡터 계산
+        // 현재 위치와 목표 위치 점끼리의 벡터 계산
         double dx = playerX - x;
         double dy = playerY - y;
 
         // 이동 벡터의 크기 계산
         double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
+        
 
+        // 플레이어와 적이 충돌할 거리 설정
+        double collisionDistance = 1;
+        
+        
         // 적과 플레이어의 좌표가 일치하면 목표 위치에 도달한 것으로 간주
-        if (distanceToTarget <= MOVE_AMOUNT || (int) x == (int) playerX && (int) y == (int) playerY) {
+        if (distanceToTarget <= collisionDistance || (int) x == (int) playerX && (int) y == (int) playerY) {
             x = playerX;
-            y = playerY;
+            y = playerY;	 
         } else {
             // 이동 속도에 맞춰 이동 벡터를 스케일링하여 현재 위치에 추가
             double scale = MOVE_AMOUNT / distanceToTarget;
             x += dx * scale;
             y += dy * scale;
+            System.out.println("player x:" + playerX + "  player y : " + playerY + " enemy x:" + x + "  enemy y : " + y);
+            
         }
         
+
         // 히트박스 업데이트
         hitbox.setPosition((int) x, (int) y);
         repaint();
