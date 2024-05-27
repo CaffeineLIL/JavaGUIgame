@@ -44,7 +44,8 @@ public class PlayerImage {
 
     // 두 이미지를 합성하여 새로운 이미지를 생성합니다.
     private void combineImages() {
-        int combinedWidth = Math.max(head_image.getWidth(), body_cropped.getWidth());
+       //int combinedWidth = Math.max(head_image.getWidth(), body_cropped.getWidth());
+        int combinedWidth = head_image.getWidth();
         int combinedHeight = head_image.getHeight() + body_cropped.getHeight(); 
         image = new BufferedImage(combinedWidth, combinedHeight, BufferedImage.TYPE_INT_ARGB);
 
