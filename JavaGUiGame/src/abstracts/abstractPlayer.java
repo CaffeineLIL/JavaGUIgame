@@ -2,7 +2,7 @@ package abstracts;
 
 
 public abstract class abstractPlayer extends abstractBasis {
-	final private int HP = 5;
+	final private int HP = 6;
 	final private double baseATK = 3.5;
 	private double effectiveDmg;
 	//캐릭터 공격 데미지 계산 공식

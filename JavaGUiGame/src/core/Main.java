@@ -8,7 +8,8 @@ public class Main extends JFrame {
     public Main() {
         // JFrame 창 생성
         setTitle("캐릭터 움직임 구현");
-        setSize(1000, 600);
+        setSize(1100, 700);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
        

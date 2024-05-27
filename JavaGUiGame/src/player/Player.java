@@ -12,6 +12,7 @@ import abstracts.abstractPlayer;
 
 public class Player extends abstractPlayer implements PlayerPositionProvider {
 
+	private double hp = getHP();
     private int x = 50;
     private int y = 50;
     private final int SIZE = 100; // 여기서 원하는 크기로 변경

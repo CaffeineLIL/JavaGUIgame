@@ -31,11 +31,5 @@ public abstract class abstractImage extends JPanel {
 
     public abstract void combineImages();
     
-    @Override
-    protected void paintComponent(Graphics g) {
-        
-        for (Map.Entry<String, BufferedImage> entry : images.entrySet()) {
-            g.drawImage(entry.getValue(), 0, 0, this);
-        }
-    }
+    
 }
