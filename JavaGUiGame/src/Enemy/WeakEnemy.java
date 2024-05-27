@@ -3,38 +3,32 @@ package Enemy;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
-import status_basis.RectangleHitbox;
 import abstracts.abstractEnemy;
 import abstracts.abstractHitbox;
-import Enemy.WeakEnemyImage;
+import status_basis.RectangleHitbox;
 
 public class WeakEnemy extends abstractEnemy {
-	
-	private int hp = 10;
+    private int hp = 10;
     private int x = 200;
     private int y = 200;
     private final int SIZE = 50;
     private final int MOVE_AMOUNT = 3;
-   
-    
     private abstractHitbox hitbox;
     private BufferedImage enemyImage;
-    
+    private WeakEnemyImage enemyImg;
+
     public WeakEnemy(int playerX, int playerY) {
-    	setOpaque(false);
-    	hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
-    	WeakEnemyImage enemyimg = new WeakEnemyImage();
-    	enemyImage = enemyimg.getImage();
-    	
-    	move(playerX, playerY);
-    	hitbox.setPosition(x, y);
-    	repaint();
-    	
+        setOpaque(false);
+        hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
+        enemyImg = new WeakEnemyImage();
+        enemyImage = enemyImg.getImage();
+
+        move(playerX, playerY);
+        hitbox.setPosition(x, y);
+        repaint();
     }
-    
- // 적을 이동시키는 메서드
+
+    // 적을 이동시키는 메서드
     public void move(int PlayerX, int PlayerY) {
         // 현재 위치와 목표 위치 간의 이동 벡터 계산
         double dx = PlayerX - x;
@@ -54,7 +48,7 @@ public class WeakEnemy extends abstractEnemy {
             y += dy * scale;
         }
     }
-    
+
     // 적의 위치를 반환하는 메서드
     public int getX() {
         return x;
@@ -63,16 +57,16 @@ public class WeakEnemy extends abstractEnemy {
     public int getY() {
         return y;
     }
-    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         // 캐릭터 이미지 그리기
-        g.setColor(Color.WHITE);
-        
-        g.fillRect(x, y, 200, 150); // 좌표 및 크기는 필요에 맞게 조정
-        
+        if (enemyImage != null) {
+            g.drawImage(enemyImage, x, y, SIZE, SIZE, null);
+        }
+
         // 히트박스 그리기 (예외 처리 추가)
         try {
             if (hitbox != null) {
@@ -84,7 +78,4 @@ public class WeakEnemy extends abstractEnemy {
             System.out.println("히트박스 인식 오류: " + e.getMessage());
         }
     }
-    
-    
-    
 }
