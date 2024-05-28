@@ -1,6 +1,7 @@
 package player;
 
 import javax.imageio.ImageIO;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,10 +12,13 @@ public class PlayerImage {
     private BufferedImage head_image;
     private BufferedImage body_image;
     private BufferedImage image;
-    private int imageX;
+    private int imageX = 0;
     private int imageY;
     private int imgindex = 0;
+    
     private ArrayList<BufferedImage> changebody = new ArrayList<>();
+    private BufferedImage secondBufferimg;
+    private Graphics2D secondBufferG2d;
 
     public PlayerImage() {
         try {
@@ -31,6 +35,22 @@ public class PlayerImage {
     // 자른 body_image 부분을 image에 저장하고 반환합니다.
     public BufferedImage getImage() {
         return image;
+    }
+
+    // 더블 버퍼링을 사용하여 이미지를 그리고 화면에 출력합니다.
+    public void paint(Graphics g) {
+        if (secondBufferimg == null) {
+            secondBufferimg = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
+            secondBufferG2d = secondBufferimg.createGraphics();
+        }
+        update(secondBufferG2d);
+        g.drawImage(secondBufferimg, 0, 0, null);
+    }
+
+    public void update(Graphics g) {
+        secondBufferimg = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
+        secondBufferG2d = secondBufferimg.createGraphics();
+        secondBufferG2d.drawImage(image, 0, 0, null);
     }
 
     // body_image의 일부를 잘라냅니다.

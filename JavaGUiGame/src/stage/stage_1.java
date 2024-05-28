@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class stage_1 extends JPanel {
     private BufferedImage backgroundImage;
-    private double playerX, playerY; // 변경: int -> double
+    private int playerX, playerY; // 변경: int -> double
     private double enemy1_hp;
     private boolean EnemyAlive = true;
     Timer timer;

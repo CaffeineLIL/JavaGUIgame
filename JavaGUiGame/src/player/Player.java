@@ -14,8 +14,8 @@ import abstracts.abstractPlayer;
 public class Player extends abstractPlayer implements PlayerPositionProvider {
 
 	private double hp = getHP();
-    private double x = 700;
-    private double y = 100;
+    private int x = 700;
+    private int y = 100;
     private final int SIZE = 100; // 여기서 원하는 크기로 변경
     private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
@@ -33,12 +33,12 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
     // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
     @Override
-    public double getPlayerX() {
+    public int getPlayerX() {
         return x;
     }
 
     @Override
-    public double getPlayerY() {
+    public int getPlayerY() {
         return y;
     }
     
@@ -64,22 +64,22 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
         Timer timer = new Timer(10, e -> {
             boolean moved = false;
             if (upPressed) {
-                y = Math.max(y - MOVE_AMOUNT, 0);
+                y = (int) Math.max(y - MOVE_AMOUNT, 0);
                 playerImg.moveDown();
                 moved = true;
             }
             if (downPressed) {
-                y = Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
+                y = (int) Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
                 playerImg.moveDown();
                 moved = true;
             }
             if (leftPressed) {
-                x = Math.max(x - MOVE_AMOUNT, 0);
+                x = (int) Math.max(x - MOVE_AMOUNT, 0);
                 playerImg.moveDown();
                 moved = true;
             }
             if (rightPressed) {
-                x = Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
+                x = (int) Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
                 playerImg.moveDown();
                 moved = true;
             }    
