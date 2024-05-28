@@ -5,22 +5,21 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PlayerImage {
     private BufferedImage head_image;
     private BufferedImage body_image;
-    private BufferedImage body_cropped;
     private BufferedImage image;
     private int imageX;
     private int imageY;
     private int imgindex = 0;
-    private final int[] changeImg = {0, 30, 60, 90, 120, 150, 180, 210, 240};
+    private ArrayList<BufferedImage> changebody = new ArrayList<>();
 
     public PlayerImage() {
         try {
             head_image = ImageIO.read(new File("assets/maidlilpa/lilpaface_sp.png"));
             body_image = ImageIO.read(new File("assets/maidlilpa/lilpadown_sp_strip10.png"));
-            
             
             cropBodyImage();
             combineImages();
@@ -36,17 +35,21 @@ public class PlayerImage {
 
     // body_image의 일부를 잘라냅니다.
     private void cropBodyImage() {
-        // 자를 부분의 크기가 원본 이미지의 범위를 벗어나지 않도록 조절
-        int width = Math.min(30, body_image.getWidth() - imageX);
-        int height = Math.min(30, body_image.getHeight() - imageY);
-        body_cropped = body_image.getSubimage(imageX, imageY, width, height);
+        int imgcutX = 0;
+        for (int i = 0; i < 9; i++) {
+            int width = Math.min(30, body_image.getWidth() - imgcutX);
+            int height = Math.min(30, body_image.getHeight() - imageY);
+            BufferedImage body_cropped = body_image.getSubimage(imgcutX, imageY, width, height);
+            changebody.add(body_cropped);
+            imgcutX += 30;
+        }
     }
 
     // 두 이미지를 합성하여 새로운 이미지를 생성합니다.
     private void combineImages() {
-       //int combinedWidth = Math.max(head_image.getWidth(), body_cropped.getWidth());
+        BufferedImage body_cropped = changebody.get(imgindex);
         int combinedWidth = head_image.getWidth();
-        int combinedHeight = head_image.getHeight() + body_cropped.getHeight(); 
+        int combinedHeight = head_image.getHeight() + body_cropped.getHeight();
         image = new BufferedImage(combinedWidth, combinedHeight, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = image.createGraphics();
@@ -77,14 +80,8 @@ public class PlayerImage {
 
     // 아래로 움직일 경우 이미지를 변경합니다.
     public void moveDown() {
-        // x 좌표를 증가시키고 자를 부분을 다시 설정합니다.
-        imageX = changeImg[imgindex++];
-        
-        if(imgindex >= changeImg.length) {
-            imgindex = 0;
-        }
-        
-        cropBodyImage();
+        // changebody 리스트에서 이미지를 순환합니다.
+        imgindex = (imgindex + 1) % changebody.size();
         combineImages(); // 이동 후 이미지를 다시 합성합니다.
     }
 }
