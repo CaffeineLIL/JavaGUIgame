@@ -16,7 +16,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 	private double hp = getHP();
     private int x = 700;
     private int y = 100;
-    private final int SIZE = 120; // 여기서 원하는 크기로 변경
+    private final int SIZE = 105; // 여기서 원하는 크기로 변경
     private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
     

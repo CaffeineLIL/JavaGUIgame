@@ -98,7 +98,7 @@ public class PlayerImage {
         g2d.drawImage(head_image, 0, 0, null); // head_image를 (0, 0)에 그립니다.
         g2d.drawImage(body_cropped, 10, 60, null); // body_cropped를 (10, 60 의 높이)에 그립니다.
         g2d.dispose(); // 그래픽 객체를 제거합니다.
-
+        	
         // 이미지 크기를 조정합니다.
         image = scaleImage(image, 130, 190); // 원하는 크기로 변경
     }
@@ -112,5 +112,5 @@ public class PlayerImage {
         return scaledImage;
     }
 
-  
+    
 }
