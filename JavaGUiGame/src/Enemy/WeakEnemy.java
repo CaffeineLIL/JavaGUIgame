@@ -33,7 +33,7 @@ public class WeakEnemy extends abstractEnemy {
         this.playerY = playerY;
     }
     
-    public void setPlayerPosition(int playerX, int playerY) { // 변경: int -> double
+    public void setPlayerPosition(int playerX, int playerY) {
         this.playerX = playerX;
         this.playerY = playerY;
     }
@@ -47,10 +47,8 @@ public class WeakEnemy extends abstractEnemy {
         // 이동 벡터의 크기 계산
         double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
         
-
         // 플레이어와 적이 충돌할 거리 설정
         double collisionDistance = 1;
-        
         
         // 적과 플레이어의 좌표가 일치하면 목표 위치에 도달한 것으로 간주
         if (distanceToTarget <= collisionDistance || (int) x == (int) playerX && (int) y == (int) playerY) {
