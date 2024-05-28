@@ -2,12 +2,11 @@ package status_basis;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import javax.swing.*;
 import abstracts.abstractImage;
 
 public class UI extends abstractImage {
-	JPanel uiPanel, TopPanel, hpPanel; 
+    JPanel uiPanel, TopPanel, hpPanel; 
     JLabel[] hpLabels;
 
     public UI(int hp) {
@@ -22,9 +21,10 @@ public class UI extends abstractImage {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setComposite(AlphaComposite.SrcOver.derive(0f));
-                g2d.setColor(getBackground());
-                g2d.fillRect(0, 0, getWidth(), getHeight());
+                // 배경색을 완전히 투명하게 설정
+                g2d.setComposite(AlphaComposite.SrcOver.derive(0.0f));
+                g2d.setColor(new Color(0, 0, 0, 0)); // 완전히 투명한 색상
+                g2d.drawRect(0, 0, getWidth(), getHeight());
                 g2d.dispose();
             }
         };
@@ -37,9 +37,10 @@ public class UI extends abstractImage {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setComposite(AlphaComposite.SrcOver.derive(0f));
-                g2d.setColor(getBackground());
-                g2d.fillRect(0, 0, getWidth(), getHeight());
+                // 배경색을 완전히 투명하게 설정
+                g2d.setComposite(AlphaComposite.SrcOver.derive(0.0f));
+                g2d.setColor(new Color(0, 0, 0, 0)); // 완전히 투명한 색상
+                g2d.drawRect(0, 0, getWidth(), getHeight());
                 g2d.dispose();
             }
         };
@@ -102,7 +103,6 @@ public class UI extends abstractImage {
         g2d.dispose();
         return transparentImage;
     }
-
 
     @Override
     public void combineImages() {
