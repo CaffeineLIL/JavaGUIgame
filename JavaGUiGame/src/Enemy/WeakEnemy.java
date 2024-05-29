@@ -36,11 +36,12 @@ public class WeakEnemy extends abstractEnemy {
     public void setPlayerPosition(int playerX, int playerY) {
         this.playerX = playerX;
         this.playerY = playerY;
+        //System.out.println("player x:" + playerX + "  player y : " + playerY);
     }
 
     @Override
     public void move() {
-        // 현재 위치와 목표 위치 점끼리의 벡터 계산
+        // x축과 y축에 대해 개별적으로 이동 벡터 계산
         double dx = playerX - x;
         double dy = playerY - y;
 
@@ -49,25 +50,37 @@ public class WeakEnemy extends abstractEnemy {
         
         // 플레이어와 적이 충돌할 거리 설정
         double collisionDistance = 1;
-        
+
         // 적과 플레이어의 좌표가 일치하면 목표 위치에 도달한 것으로 간주
-        if (distanceToTarget <= collisionDistance || (int) x == (int) playerX && (int) y == (int) playerY) {
+        if (distanceToTarget <= collisionDistance || ((int) x == (int) playerX && (int) y == (int) playerY)) {
             x = playerX;
             y = playerY;	 
-        } else {
-            // 이동 속도에 맞춰 이동 벡터를 스케일링하여 현재 위치에 추가
-            double scale = MOVE_AMOUNT / distanceToTarget;
-            x += dx * scale;
-            y += dy * scale;
-            System.out.println("player x:" + playerX + "  player y : " + playerY + " enemy x:" + x + "  enemy y : " + y);
             
+        } else {
+            // x축과 y축에 대해 이동 거리 계산
+            double xMoveAmount = MOVE_AMOUNT * (dx / distanceToTarget);
+            double yMoveAmount = MOVE_AMOUNT * (dy / distanceToTarget);
+
+            // 현재 위치에 이동 거리 추가
+            x += xMoveAmount;
+            y += yMoveAmount;
+
+            // x, y 좌표가 각각 플레이어 위치를 넘어가지 않도록 조정
+            if (Math.abs(playerX - x) < Math.abs(xMoveAmount)) {
+                x = playerX;
+            }
+            if (Math.abs(playerY - y) < Math.abs(yMoveAmount)) {
+                y = playerY;
+            }
+            
+          //  System.out.println(" enemy x:" + x + "  enemy y : " + y);
         }
-        
 
         // 히트박스 업데이트
         hitbox.setPosition((int) x, (int) y);
         repaint();
     }
+
 
     // 적의 위치를 반환하는 메서드
     public int getX() {
