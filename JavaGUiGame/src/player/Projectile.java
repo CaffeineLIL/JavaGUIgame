@@ -5,13 +5,13 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 public class Projectile {
-    private double x, y;
+    private int x, y;
     private double directionX, directionY;
     private double speed;
     private int size;
     private boolean active;
 
-    public Projectile(double x, double y, double directionX, double directionY, double speed, int size) {
+    public Projectile(int x, int y, double directionX, double directionY, double speed, int size) {
         this.x = x;
         this.y = y;
         this.directionX = directionX;
