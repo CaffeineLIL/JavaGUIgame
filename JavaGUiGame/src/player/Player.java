@@ -18,6 +18,9 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private final int SIZE = 105; // 여기서 원하는 크기로 변경
     private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
+    
+    int projectileSize = 10; // Projectile 크기 설정
+    double speed = 10;
 
     // w, s, a, d 동작 인식 변수 초기화
     private boolean upPressed = false;
@@ -244,8 +247,6 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     }
 
     private void shootProjectile(double directionX, double directionY) {
-        int projectileSize = 10; // Projectile 크기 설정
-        double speed = 10; // Projectile 속도 설정
         projectiles.add(new Projectile(x + SIZE / 2, y + SIZE / 2, directionX, directionY, speed, projectileSize));
     }
 

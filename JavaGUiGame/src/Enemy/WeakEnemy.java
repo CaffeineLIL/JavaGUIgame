@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import abstracts.abstractEnemy;
 import abstracts.abstractHitbox;
+import player.Player;
+import player.Projectile;
 import status_basis.RectangleHitbox;
 
 public class WeakEnemy extends abstractEnemy {
@@ -12,6 +14,8 @@ public class WeakEnemy extends abstractEnemy {
     private int y = 200; // 변경: int -> double
     private final int SIZE = 50;
     private final double MOVE_AMOUNT = 3; // 변경: int -> double
+    private boolean alive = true;
+    
     private abstractHitbox hitbox;
     private BufferedImage enemyImage;
     private WeakEnemyImage enemyImg;
@@ -20,7 +24,11 @@ public class WeakEnemy extends abstractEnemy {
     private int playerY; // 변경: int -> double
 
     public double getenHp() {
-    	return hp;
+    	return this.hp;
+    }
+    // 추가: 히트박스를 반환하는 메서드
+    public Rectangle getHitbox() {
+        return new Rectangle((int)x, (int)y, SIZE, SIZE);
     }
     
     public WeakEnemy(int playerX, int playerY) { // 변경: int -> double
@@ -80,6 +88,8 @@ public class WeakEnemy extends abstractEnemy {
         hitbox.setPosition((int) x, (int) y);
         repaint();
     }
+    
+    
 
 
     // 적의 위치를 반환하는 메서드
@@ -91,9 +101,28 @@ public class WeakEnemy extends abstractEnemy {
         return (int)y;
     }
     
+    /*
+  //적중시 hp 감소
+    public void checkhit(double dmg, player.Projectile bullet) {
+    	 Rectangle enemyHitbox = getHitbox();
+    	if(enemyHitbox.intersects(bullet)) {
+    		this.hp -= dmg; 
+    		if(this.hp < 0) {
+    			this.alive = false;
+    		}
+    	}
+    	
+    	
+    }
+    */
     // 적의 체력 반환 메서드
     public double getEnHp() {
-        return hp;
+        return this.hp;
+    }
+    
+    //적의 생존 상태 반환 메서드
+    public boolean isAlive() {
+    	return this.alive;
     }
 
     @Override
@@ -108,7 +137,7 @@ public class WeakEnemy extends abstractEnemy {
         // 히트박스 그리기 (예외 처리 추가)
         try {
             if (hitbox != null) {
-                //hitbox.draw(g);
+                hitbox.draw(g);
             } else {
                 throw new RuntimeException("히트박스가 초기화되지 않았습니다.");
             }

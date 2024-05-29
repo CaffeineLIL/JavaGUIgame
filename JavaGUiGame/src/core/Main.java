@@ -21,10 +21,13 @@ public class Main extends JFrame {
 
         stage_1 stage1 = new stage_1();
         add(stage1, BorderLayout.CENTER);
+        //add(stage1);
+
 
         int hp = 4; // 플레이어의 HP 수
         UI ui = new UI(hp);
         add(ui, BorderLayout.NORTH);
+        //add(ui);
     }
 
     public static void main(String[] args) {

@@ -17,6 +17,7 @@ public abstract class abstractBasis extends JPanel{
 	
     public Dimension getPreferredSize() {
         // JPanel의 크기를 JFrame과 동일하게 반환합니다.
+    	this.setOpaque(false);
         return new Dimension(1000, 600);
        
     }

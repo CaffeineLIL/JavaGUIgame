@@ -16,8 +16,8 @@ public class UI extends abstractImage {
 
     public void initUI(int hp) {
         // 메인 UI 패널 생성
-        uiPanel = new JPanel() {
-            @Override
+        uiPanel = new JPanel()   /* {
+         @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
@@ -27,13 +27,14 @@ public class UI extends abstractImage {
                 g2d.drawRect(0, 0, getWidth(), getHeight());
                 g2d.dispose();
             }
-        };
+        }*/
+        ;
         uiPanel.setLayout(new BorderLayout());
         uiPanel.setOpaque(false);
 
         // 상단에 넣을 패널 생성
-        TopPanel = new JPanel() {
-            @Override
+        TopPanel = new JPanel() /* {
+           @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
@@ -43,7 +44,8 @@ public class UI extends abstractImage {
                 g2d.drawRect(0, 0, getWidth(), getHeight());
                 g2d.dispose();
             }
-        };
+        }*/
+        ;
         TopPanel.setLayout(new BorderLayout());
         TopPanel.setOpaque(false);
 
