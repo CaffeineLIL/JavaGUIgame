@@ -16,6 +16,9 @@ public class WeakEnemy extends abstractEnemy {
     private final int SIZE = 50;
     private final double MOVE_AMOUNT = 3; // 변경: int -> double
     private boolean alive = true;
+   
+    Player player = new Player();
+    private double PlayerDmg;
     
     private abstractHitbox hitbox;
     private BufferedImage enemyImage;
@@ -59,9 +62,27 @@ public class WeakEnemy extends abstractEnemy {
     public void setCollisionDetector(CollisionDetector collisionDetector) {
         this.collisionDetector = collisionDetector;
     }
+    
+    // 투사체와 충돌 시 피격 처리
+    public void checkHit(Projectile projectile) {
+        Rectangle enemyHitbox = getHitbox();
+        if (hitbox.intersects(projectile)) {
+            this.hp -= PlayerDmg;
+            if (this.hp <= 0) {
+                this.alive = false;
+            }
+            projectile.deactivate();
+        }
+    }
 
     @Override
     public void move() {
+    	int newX;
+    	int newY;
+    	
+    	//지속적으로 플레이어의 데미지 갱신
+    	PlayerDmg = player.getDamage();
+    	
         // x축과 y축에 대해 개별적으로 이동 벡터 계산
         double dx = playerX - x;
         double dy = playerY - y;
@@ -74,42 +95,46 @@ public class WeakEnemy extends abstractEnemy {
 
         // 적과 플레이어의 좌표가 일치하면 목표 위치에 도달한 것으로 간주
         if (distanceToTarget <= collisionDistance || ((int) x == (int) playerX && (int) y == (int) playerY)) {
-            x = playerX;
-            y = playerY;	 
+            newX = playerX;
+            newY = playerY;	 
             
         } else {
             // x축과 y축에 대해 이동 거리 계산
             double xMoveAmount = MOVE_AMOUNT * (dx / distanceToTarget);
             double yMoveAmount = MOVE_AMOUNT * (dy / distanceToTarget);
             
-            int newX = (int)(x + xMoveAmount);
-            int newY = (int)(y + yMoveAmount);
+            newX = (int)(x + xMoveAmount);
+            newY = (int)(y + yMoveAmount);
             
             //벽에 닿지 않을 경우 위치 변환
             if (!collisionDetector.checkCollision(new Rectangle(newX, newY, SIZE, SIZE))) {
                 x = newX;
                 y = newY;
+                
+                
+                // x, y 좌표가 각각 플레이어 위치를 넘어가지 않도록 조정
+                if (Math.abs(playerX - x) < Math.abs(xMoveAmount)) {
+                    x = playerX;
+                }
+                if (Math.abs(playerY - y) < Math.abs(yMoveAmount)) {
+                    y = playerY;
+                }
             }
             
             // 현재 위치에 이동 거리 추가
             // x += xMoveAmount;
             // y += yMoveAmount;
             
-            
-            // x, y 좌표가 각각 플레이어 위치를 넘어가지 않도록 조정
-            if (Math.abs(playerX - x) < Math.abs(xMoveAmount)) {
-                x = playerX;
-            }
-            if (Math.abs(playerY - y) < Math.abs(yMoveAmount)) {
-                y = playerY;
-            }
-            
+
           //  System.out.println(" enemy x:" + x + "  enemy y : " + y);
         }
 
         // 히트박스 업데이트
         hitbox.setPosition((int) x, (int) y);
         repaint();
+        
+
+
     }
     
     

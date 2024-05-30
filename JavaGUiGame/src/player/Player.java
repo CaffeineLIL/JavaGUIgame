@@ -20,8 +20,12 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
     
-    int projectileSize = 10; // Projectile 크기 설정
-    double speed = 10;
+    private int projectileSize = 10; // Projectile 크기 설정
+    
+    private double damage; //공격 데미지
+    private double totalDmgup = 3; //획득한 공격 아이템의 계수의 총합
+    private double FlatDmgup = 0; // 아이템의 특수 공격력 수치
+    private double speed = 10;
 
     // w, s, a, d 동작 인식 변수 초기화
     private boolean upPressed = false;
@@ -59,12 +63,20 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             alive = false;
         return alive;
     }
-
+    
+    public double getDamage() {
+    	return damage;
+    }
+    
+    
     public Player() {
         setOpaque(false);
         playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
         projectiles = new ArrayList<>();
+        
+        // abstractPlayer의 PlayerAtk 메서드를 사용하여 플레이어의 공격 데미지 설정
+        damage = PlayerAtk(totalDmgup, FlatDmgup); 
         
         //장애물 충돌 감지 설정
         collisionDetector = new CollisionDetector();
@@ -74,7 +86,6 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
         // KeyBindings 설정
         setupKeyBindings();
-        
         
 
         // Timer 설정 (이동을 부드럽게 하기 위해)
@@ -105,7 +116,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
                 moved = true;
             }
             
-            // 충돌 감지
+            // 벽과의 충돌 감지
             if (!collisionDetector.checkCollision(new Rectangle(newX, newY, SIZE, SIZE))) {
                 x = newX;
                 y = newY;
