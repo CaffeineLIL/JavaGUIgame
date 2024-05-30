@@ -7,6 +7,7 @@ import abstracts.abstractHitbox;
 import player.Player;
 import player.Projectile;
 import status_basis.RectangleHitbox;
+import utils.CollisionDetector;
 
 public class WeakEnemy extends abstractEnemy {
     private double hp = setHp();
@@ -20,6 +21,9 @@ public class WeakEnemy extends abstractEnemy {
     private BufferedImage enemyImage;
     private WeakEnemyImage enemyImg;
     
+    //충돌 감지 참조변수 추가
+    private CollisionDetector collisionDetector;
+    
     private int playerX; // 변경: int -> double
     private int playerY; // 변경: int -> double
 
@@ -31,6 +35,8 @@ public class WeakEnemy extends abstractEnemy {
         return new Rectangle((int)x, (int)y, SIZE, SIZE);
     }
     
+    
+    //적 객체 생성자
     public WeakEnemy(int playerX, int playerY) { // 변경: int -> double
         setOpaque(false);
         hitbox = new RectangleHitbox((int) x, (int) y, SIZE, SIZE);
@@ -39,12 +45,19 @@ public class WeakEnemy extends abstractEnemy {
         
         this.playerX = playerX;
         this.playerY = playerY;
+        
+        //장애물 충돌 감지 설정
+        collisionDetector = new CollisionDetector();
     }
     
     public void setPlayerPosition(int playerX, int playerY) {
         this.playerX = playerX;
         this.playerY = playerY;
         //System.out.println("player x:" + playerX + "  player y : " + playerY);
+    }
+    
+    public void setCollisionDetector(CollisionDetector collisionDetector) {
+        this.collisionDetector = collisionDetector;
     }
 
     @Override
@@ -68,11 +81,21 @@ public class WeakEnemy extends abstractEnemy {
             // x축과 y축에 대해 이동 거리 계산
             double xMoveAmount = MOVE_AMOUNT * (dx / distanceToTarget);
             double yMoveAmount = MOVE_AMOUNT * (dy / distanceToTarget);
-
+            
+            int newX = (int)(x + xMoveAmount);
+            int newY = (int)(y + yMoveAmount);
+            
+            //벽에 닿지 않을 경우 위치 변환
+            if (!collisionDetector.checkCollision(new Rectangle(newX, newY, SIZE, SIZE))) {
+                x = newX;
+                y = newY;
+            }
+            
             // 현재 위치에 이동 거리 추가
-            x += xMoveAmount;
-            y += yMoveAmount;
-
+            // x += xMoveAmount;
+            // y += yMoveAmount;
+            
+            
             // x, y 좌표가 각각 플레이어 위치를 넘어가지 않도록 조정
             if (Math.abs(playerX - x) < Math.abs(xMoveAmount)) {
                 x = playerX;

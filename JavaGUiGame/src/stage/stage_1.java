@@ -25,24 +25,27 @@ public class stage_1 extends JPanel {
         // 이미지 로드
         Map_bg mapBg = new Map_bg();
         backgroundImage = mapBg.getImage();
+        
+        // 충돌 감지기 초기화 및 벽 추가
+        collisionDetector = new CollisionDetector();
+        initializeWalls();
 
         player = new Player();
         playerX = player.getPlayerX();
         playerY = player.getPlayerY();
-
-        add(player);
-
-        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
-        enemy1_hp = enemy_1.getenHp();
-        add(enemy_1);
-
-        // 충돌 감지기 초기화 및 벽 추가
-        collisionDetector = new CollisionDetector();
-        initializeWalls();
         
         // 플레이어에 충돌 감지기 설정
         player.setCollisionDetector(collisionDetector);
+        
+        add(player);
 
+        
+        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
+        enemy_1.setCollisionDetector(collisionDetector); // 적에게도 충돌 감지기 설정
+        enemy1_hp = enemy_1.getenHp();
+        add(enemy_1);
+
+      
         // 타이머 설정 (적의 이동을 주기적으로 업데이트하기 위해)
         timer = new Timer(15, new ActionListener() {
             @Override
@@ -64,16 +67,16 @@ public class stage_1 extends JPanel {
         // 벽 좌표 및 크기 추가
         collisionDetector.addWall(new Rectangle(10, 0, 1000, 50)); //위쪽 벽
         collisionDetector.addWall(new Rectangle(80, 520, 1000, 50)); //아래쪽 벽
-        collisionDetector.addWall(new Rectangle(0, 20, 50, 600)); // 왼쪽 벽 
+        collisionDetector.addWall(new Rectangle(-20, 20, 50, 600)); // 왼쪽 벽 
         collisionDetector.addWall(new Rectangle(1005, 20, 50, 600)); //오른쪽 벽
     }
 
     // 투명한 벽을 그리는 메서드 추가
     private void drawWalls(Graphics2D g2d) {
-        g2d.setColor(new Color(23, 79, 0, 200)); // 투명한 색상으로 나중에 바꾸기
-        g2d.fillRect(80, 20, 1000, 50);
+        g2d.setColor(new Color(0, 0, 0, 0)); // 투명한 색상으로 나중에 바꾸기
+        g2d.fillRect(10, 0, 1000, 50);
         g2d.fillRect(80, 520, 1000, 50);
-        g2d.fillRect(0, 20, 50, 600);
+        g2d.fillRect(-20, 20, 50, 600);
         g2d.fillRect(1005, 20, 50, 600);
     }
 

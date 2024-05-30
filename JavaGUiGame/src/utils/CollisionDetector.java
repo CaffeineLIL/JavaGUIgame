@@ -3,6 +3,8 @@ package utils;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+
+//벽 충돌 감지
 public class CollisionDetector {
 
     private ArrayList<Rectangle> walls;
