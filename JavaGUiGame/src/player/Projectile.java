@@ -16,6 +16,8 @@ public class Projectile {
     private double speed;
     private int size;
     private boolean active;
+    private Rectangle hitbox;  // 변경: Rectangle 사용
+
     private BufferedImage image;
     private BufferedImage bulletImage;
     private ArrayList<BufferedImage> changeBullet = new ArrayList<>();
@@ -28,39 +30,40 @@ public class Projectile {
         this.speed = speed;
         this.size = size;
         this.active = true;
-        
+        this.hitbox = new Rectangle(x, y, size, size); // Rectangle 초기화
+
         this.image = image;
     }
 
     public void update() {
         x += directionX * speed;
         y += directionY * speed;
+        hitbox.setLocation(x, y);  // hitbox 위치 업데이트
     }
 
     public void draw(Graphics2D g) {
         if (active) {
             g.setColor(Color.cyan);
             g.fillRect((int)x, (int)y, size, size);
-            
-            //g.drawImage(image, x, y,size,size, null);
+
+            //g.drawImage(image, x, y, size, size, null);
         }
     }
-    
+
     public void setImage() {
         try {
-        	bulletImage = ImageIO.read(new File("assets/effect/불타는눈물_2-Sheet.png"));
+            bulletImage = ImageIO.read(new File("assets/effect/불타는눈물_2-Sheet.png"));
             cropImages();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
- // body_image의 일부를 잘라냅니다.
+
     private void cropImages() {
         int imgcutX = 0;
         for (int i = 0; i < 9; i++) {
             int width = Math.min(30, bulletImage.getWidth() - imgcutX);
-          
+
             int height = Math.min(30, bulletImage.getHeight() - 30);
 
             image = bulletImage.getSubimage(imgcutX, 30, width, height);
@@ -68,15 +71,13 @@ public class Projectile {
             imgcutX = imgcutX + 32;
         }
     }
-    
-    // 자른 body_image 부분을 image에 저장하고 반환합니다.
+
     public BufferedImage getImage() {
         return image;
     }
 
-    public boolean checkCollision(Rectangle target) {
-        Rectangle projectileRect = new Rectangle((int)x, (int)y, size, size);
-        return projectileRect.intersects(target);
+    public boolean checkCollision(Rectangle targetHitbox) {
+        return hitbox.intersects(targetHitbox); // 변경: Rectangle을 사용하여 충돌 감지
     }
 
     public void deactivate() {
@@ -87,7 +88,12 @@ public class Projectile {
         return active;
     }
 
-	public int getX() {
-		return this.x;
+    public int getX() {
+        return this.x;
+    }
+
+	public Rectangle getHitbox() {
+		// TODO Auto-generated method stub
+		return hitbox;
 	}
 }

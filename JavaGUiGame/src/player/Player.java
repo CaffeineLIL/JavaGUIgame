@@ -64,10 +64,25 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
         return alive;
     }
     
+    //플레이어 체력 감소
+    public void decreaseHp(double amount) {
+        hp -= amount;
+        if (hp < 0) {
+            alive = false;
+        }
+    }
+
+    public double getHp() {
+        return hp;
+    }
+    
     public double getDamage() {
     	return damage;
     }
     
+    public abstractHitbox getHitbox() {
+        return hitbox;
+    }
     
     public Player() {
         setOpaque(false);
@@ -225,6 +240,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             public void actionPerformed(ActionEvent e) {
                 upkeyPressed = true;
                 shootProjectile(0, -1); // 위쪽으로 발사
+                
             }
         });
         actionMap.put("upkeyReleased", new AbstractAction() {
@@ -302,11 +318,15 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             }
         }
 
+        
         // 히트박스 그리기
-        //hitbox.draw(g);
+        hitbox.draw(g);
     }
-
+  
     public void setCollisionDetector(CollisionDetector collisionDetector) {
         this.collisionDetector = collisionDetector;
     }
+
+
+
 }

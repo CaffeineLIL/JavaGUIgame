@@ -1,12 +1,12 @@
-// File: status_basis/RectangleHitbox.java
 package status_basis;
 
 import abstracts.abstractHitbox;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Color;
 
 public class RectangleHitbox extends abstractHitbox {
-    
+
     public RectangleHitbox(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
@@ -15,5 +15,10 @@ public class RectangleHitbox extends abstractHitbox {
     public void draw(Graphics g) {
         g.setColor(Color.RED);  // 히트박스의 색상
         g.drawRect((int)x, (int)y, (int)width, (int)height);
+    }
+    
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle((int)x, (int)y, (int)width, (int)height);
     }
 }
