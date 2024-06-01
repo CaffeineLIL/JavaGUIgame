@@ -19,7 +19,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private final int SIZE = 105; // 여기서 원하는 크기로 변경
     private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
-    
+    	
     private int projectileSize = 10; // Projectile 크기 설정
     
     private double damage; //공격 데미지
@@ -137,7 +137,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
                 y = newY;
             }
 
-            // Projectile 업데이트
+            // 투사체 업데이트
             for (Projectile projectile : projectiles) {
                 projectile.update();
             }

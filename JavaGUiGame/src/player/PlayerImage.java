@@ -78,7 +78,7 @@ public class PlayerImage {
         imgindex = 0;
         if(changebody.isEmpty()) cropBodyImage();
         combineImages();
-    }
+    } 	
 
     // 아래로 움직일 경우 이미지를 변경합니다.
     public void moveDown() {
