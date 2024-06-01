@@ -348,7 +348,7 @@ public class PlayerImage {
 }
 
   ```
-</details>
+ </details>
   
   
 
@@ -446,8 +446,7 @@ public class PlayerImage {
         
         repaint();
     }
-                                                          
-```
+
                                                           
 ```checkHit();``` ```checkCollisionWithPlayer();``` 를 호출하여 적의 피격, 공격을 체크합니다. 이후 플레이어의 좌표를 받아와 playerX, playerY에 저장하고 현재 적의 위치의 좌표와 비교하여 이동 거리 벡터를 계산합니다. 이후 벡터의 평행이동을 통해 플레이어에게 닿을 때까지 지속적으로 이동합니다.
                                                                       이후 플레이어의 이미지를 불러오는 방식과 똑같이 이미지를 불러와 적에게 할당합니다.
@@ -455,8 +454,190 @@ public class PlayerImage {
 ## 3. 게임의 창 구현 
    ![](https://velog.velcdn.com/images/caffeinelil/post/8aa8785e-0d11-45f0-bfcb-9b16a9a683ea/image.png)
 해당 형식으로 게임의 요소들을 구성합니다.
-                                                          즉, JFrame창은 가만히 놔두고 여러개의 JPanel을 배치하는 형식입니다.
+즉, JFrame창은 가만히 놔두고 여러개의 JPanel을 배치하는 형식입니다.
+                                                          이제 앞서 만든 각종 기능들의 패널을 add() 메서드를 통해 패널에 패널을 더함으로써 스테이지를 구현합니다.
 
-                                                          
--  
+또한 플레이어와 적의 움직임을 제한하기 위해 (즉, 화면 밖으로 나가지 않게 하기 위해) 투명색의 사각형을 윤곽선에 배치하여 벽을 만들어줍니다.
+```java                                                 
+ private void initializeWalls() {
+        // 벽 좌표 및 크기 추가
+collisionDetector.addWall(new Rectangle(10, 0, 1000, 50)); //위쪽 벽
+collisionDetector.addWall(new Rectangle(80, 520, 1000, 50)); //아래쪽 벽
+collisionDetector.addWall(new Rectangle(-20, 20, 50, 600)); // 왼쪽 벽 
+collisionDetector.addWall(new Rectangle(1005, 20, 50, 600)); 
+  }
+```
+ 
+벽 충돌 감지 클래스
+```java
+package utils;
+
+import java.awt.Rectangle;
+import java.util.ArrayList;
+
+import abstracts.abstractHitbox;
+import player.Projectile;
+
+
+//벽 충돌 감지
+public class CollisionDetector {
+
+    private ArrayList<Rectangle> walls;
+
+    public CollisionDetector() {
+        walls = new ArrayList<>();
+    }
+
+    public void addWall(Rectangle wall) {
+        walls.add(wall);
+    }
+
+    public boolean checkCollision(Rectangle Hitbox) {
+        for (Rectangle wall : walls) {
+            if (Hitbox.intersects(wall)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean checkProjectileCollision(Projectile projectile, abstractHitbox targetHitbox) {
+        return projectile.getHitbox().intersects(targetHitbox.toRectangle());
+    }
+}
+ ```
+ 
+  스테이지 구현 전체 코드
+   ```java
+  package stage;
+
+import javax.swing.*;
+import player.Player;
+import Enemy.WeakEnemy;
+import utils.CollisionDetector;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+public class stage_1 extends JPanel {
+    private BufferedImage backgroundImage;
+    private CollisionDetector collisionDetector;  // 충돌 감지기 추가
+    private Player player;
+    private int playerX, playerY;
+    private double enemy1_hp;
+    private boolean EnemyAlive = true;
+    Timer timer;
+
+    ArrayList<WeakEnemy> Enemy = new ArrayList<>();
+
+    public stage_1() {
+        // 이미지 로드
+        Map_bg mapBg = new Map_bg();
+        backgroundImage = mapBg.getImage();
+        
+        // 충돌 감지기 초기화 및 벽 추가
+        collisionDetector = new CollisionDetector();
+        initializeWalls();
+
+        player = new Player();
+        playerX = player.getPlayerX();
+        playerY = player.getPlayerY();
+        
+        // 플레이어에 충돌 감지기 설정
+        player.setCollisionDetector(collisionDetector);
+        
+        add(player);
+
+        
+        WeakEnemy enemy_1 = new WeakEnemy(playerX, playerY);
+        enemy_1.setCollisionDetector(collisionDetector); // 적에게도 충돌 감지기 설정
+        enemy1_hp = enemy_1.getenHp();
+        add(enemy_1);
+
+      
+        // 타이머 설정 (적의 이동을 주기적으로 업데이트하기 위해)
+        timer = new Timer(15, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player.player_isalive() && EnemyAlive == true) {
+                    enemy_1.setPlayerPosition(player.getPlayerX(), player.getPlayerY());
+                    enemy_1.move();
+                    enemy_1.repaint();
+                } else {
+                    // 플레이어가 죽으면 타이머 멈추기
+                    timer.stop();
+                }
+            }
+        });
+        timer.start();
+    }
+
+    private void initializeWalls() {
+        // 벽 좌표 및 크기 추가
+        collisionDetector.addWall(new Rectangle(10, 0, 1000, 50)); //위쪽 벽
+        collisionDetector.addWall(new Rectangle(80, 520, 1000, 50)); //아래쪽 벽
+        collisionDetector.addWall(new Rectangle(-20, 20, 50, 600)); // 왼쪽 벽 
+        collisionDetector.addWall(new Rectangle(1005, 20, 50, 600)); //오른쪽 벽
+    }
+
+    // 투명한 벽을 그리는 메서드 추가
+    private void drawWalls(Graphics2D g2d) {
+        g2d.setColor(new Color(0, 0, 0, 0)); // 투명한 색상으로 나중에 바꾸기
+        g2d.fillRect(10, 0, 1000, 50);
+        g2d.fillRect(80, 520, 1000, 50);
+        g2d.fillRect(-20, 20, 50, 600);
+        g2d.fillRect(1005, 20, 50, 600);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        // 배경 이미지 그리기
+        if (backgroundImage != null) {
+            g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+
+        // 투명한 벽 그리기
+        drawWalls(g2d);
+
+        g2d.dispose();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        // JPanel의 크기를 JFrame과 동일하게 반환합니다.
+        return new Dimension(1100, 700);
+    }
+}
+
+  ```
+  이렇게 다양한 Panel을 더한 Panel을 만들어 게임 진행 스테이지를 만들어줍니다. 
+  이후 JFrame을 만드는 클래스에서 
+  ```java 
+  hp = (int)player.getHp(); // 플레이어의 HP만큼 생명력 표시
+        UI ui = new UI(hp);
+        
+        if(!PlayerAlive) {
+        	System.out.println("Player dead");
+        	System.exit(1); //플레이어 사망 시 게임 종료
+        }
+        
+        add(ui, BorderLayout.NORTH);
+
+  ```
+  를 통해 플레이어 사망 로직을 추가하여 현재 플레이어의 체력만큼 하트 개수를 만들어 JFrame에 추가합니다.
+  
+  개선하면 좋을 점:
+  - 적의 추적 로직 개선, 아직 움직임이 부자연스러움
+  - 플레이어가 사용하는 투사체에 이미지 삽입해야하는데, 이미지가 잘 안불러와짐. 
+ - 공격할때, 이동할때 렉이 걸림. 어딘가 로직에 시간복잡도를 많이 잡아는 로직이 있는거 같음. 아직 못찾음. 다시 확인해봐야함 
+  
+ 
+  
+# 전체 코드는 제 Github에 올려놓았습니다.
+## https://github.com/CaffeineLIL/JavaGUIgame
   
