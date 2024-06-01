@@ -104,8 +104,8 @@ public class WeakEnemy extends abstractEnemy {
     
         //지속적으로 플레이어의 데미지 갱신
         PlayerDmg = player.getDamage();
-       // checkHit();
-        //checkCollisionWithPlayer();
+        checkHit();
+        checkCollisionWithPlayer();
         
         // x축과 y축에 대해 개별적으로 이동 벡터 계산
         double dx = playerX - x;
