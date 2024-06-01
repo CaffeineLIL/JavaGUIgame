@@ -22,7 +22,7 @@ public class WeakEnemy extends abstractEnemy {
     Player player = new Player();
     private double PlayerDmg;
     
-    private Rectangle  hitbox;
+    private Rectangle  Enemyhitbox;
     private BufferedImage enemyImage;
     private WeakEnemyImage enemyImg;
    
@@ -41,7 +41,7 @@ public class WeakEnemy extends abstractEnemy {
 
     // 추가: 히트박스를 반환하는 메서드
     public Rectangle getHitbox() {
-        return hitbox;
+        return Enemyhitbox;
     }
     
     
@@ -50,7 +50,7 @@ public class WeakEnemy extends abstractEnemy {
     public WeakEnemy( int playerX, int playerY) { // 변경: int -> double
         
         setOpaque(false);
-        hitbox = new Rectangle((int) x, (int) y, SIZE, SIZE);
+        Enemyhitbox = new Rectangle((int) x, (int) y, SIZE, SIZE);
         enemyImg = new WeakEnemyImage();
         enemyImage = enemyImg.getImage();
         
@@ -75,7 +75,7 @@ public class WeakEnemy extends abstractEnemy {
  // 투사체와 충돌 시 피격 처리
     public void checkHit() {
         for (Projectile projectile : projectiles) {
-            if (projectile.isActive() && projectile.checkCollision(hitbox)) {
+            if (projectile.checkCollision(Enemyhitbox)) {
                 this.hp -= player.getDamage();
                 System.out.println("hit");
                 if (this.hp <= 0) {
@@ -90,7 +90,7 @@ public class WeakEnemy extends abstractEnemy {
 
     // 플레이어와 충돌 시 체력 감소 처리
     private void checkCollisionWithPlayer() {
-    	if (hitbox.getBounds().intersects(player.getHitbox().getBounds())) { // getHitbox().getBounds() 사용
+    	if (Enemyhitbox.getBounds().intersects(player.getHitbox().getBounds())) { // getHitbox().getBounds() 사용
             player.decreaseHp(1); // 플레이어의 체력을 1 감소시킴
             System.out.println("Player hit");
         }
@@ -98,13 +98,14 @@ public class WeakEnemy extends abstractEnemy {
 
     @Override
     public void move() {
-        int newX;
-        int newY;
-        
+    	
+    	int newX;
+    	int newY;
+    
         //지속적으로 플레이어의 데미지 갱신
         PlayerDmg = player.getDamage();
-        checkHit();
-        checkCollisionWithPlayer();
+       // checkHit();
+        //checkCollisionWithPlayer();
         
         // x축과 y축에 대해 개별적으로 이동 벡터 계산
         double dx = playerX - x;
@@ -115,36 +116,37 @@ public class WeakEnemy extends abstractEnemy {
         
         // 플레이어와 적이 충돌할 거리 설정
         double collisionDistance = 1;
-
+        
         // 적과 플레이어의 좌표가 일치하면 목표 위치에 도달한 것으로 간주
-        if (distanceToTarget <= collisionDistance || ((int) x == (int) playerX && (int) y == (int) playerY)) {
-            newX = playerX;
-            newY = playerY;
-        } else {
-            // x축과 y축에 대해 이동 거리 계산
-            double xMoveAmount = MOVE_AMOUNT * (dx / distanceToTarget);
-            double yMoveAmount = MOVE_AMOUNT * (dy / distanceToTarget);
-            
-            newX = (int)(x + xMoveAmount);
-            newY = (int)(y + yMoveAmount);
-            
-            //벽에 닿지 않을 경우 위치 변환
-            if (!collisionDetector.checkCollision(new Rectangle(newX, newY, SIZE, SIZE))) {
-                x = newX;
-                y = newY;
-                
-                // x, y 좌표가 각각 플레이어 위치를 넘어가지 않도록 조정
-                if (Math.abs(playerX - x) < Math.abs(xMoveAmount)) {
-                    x = playerX;
-                }
-                if (Math.abs(playerY - y) < Math.abs(yMoveAmount)) {
-                    y = playerY;
-                }
-            }
-        }
+	        if (distanceToTarget <= collisionDistance || ((int) x == (int) playerX && (int) y == (int) playerY)) {
+	            newX = playerX;
+	            newY = playerY;
+	        } else {
+	            // x축과 y축에 대해 이동 거리 계산
+	            double xMoveAmount = MOVE_AMOUNT * (dx / distanceToTarget);
+	            double yMoveAmount = MOVE_AMOUNT * (dy / distanceToTarget);
+	            
+	            newX = (int)(x + xMoveAmount);
+	            newY = (int)(y + yMoveAmount);
+	            
+	            //벽에 닿지 않을 경우 위치 변환
+	            if (!collisionDetector.checkCollision(new Rectangle(newX, newY, SIZE, SIZE))) {
+	                x = newX;
+	                y = newY;
+	                
+	                // x, y 좌표가 각각 플레이어 위치를 넘어가지 않도록 조정
+	                if (Math.abs(playerX - x) < Math.abs(xMoveAmount)) {
+	                    x = playerX;
+	                }
+	                if (Math.abs(playerY - y) < Math.abs(yMoveAmount)) {
+	                    y = playerY;
+	                }
+	            }
+	        }
+        
 
         // 히트박스 업데이트
-        hitbox.setLocation((int) x, (int) y);
+        Enemyhitbox.setLocation((int) x, (int) y);
 
         // 플레이어와 충돌 감지 및 체력 감소 처리
         checkCollisionWithPlayer();
@@ -182,8 +184,9 @@ public class WeakEnemy extends abstractEnemy {
 
         // 히트박스 그리기 (예외 처리 추가)
         try {
-            if (hitbox != null) {
-                g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+            if (Enemyhitbox != null) {
+            	
+                g.drawRect(Enemyhitbox.x, Enemyhitbox.y, Enemyhitbox.width, Enemyhitbox.height);
             } else {
                 throw new RuntimeException("히트박스가 초기화되지 않았습니다.");
             }

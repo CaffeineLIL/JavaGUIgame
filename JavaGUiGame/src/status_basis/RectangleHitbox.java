@@ -13,7 +13,7 @@ public class RectangleHitbox extends abstractHitbox {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.RED);  // 히트박스의 색상
+        g.setColor(new Color(0, 0 , 0, 0));  // 히트박스의 색상
         g.drawRect((int)x, (int)y, (int)width, (int)height);
     }
     
