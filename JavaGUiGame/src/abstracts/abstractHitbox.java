@@ -1,10 +1,11 @@
-// File: abstracts/abstractHitbox.java
 package abstracts;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public abstract class abstractHitbox {
     protected double x, y, width, height;
+    public abstract Rectangle getBounds();
 
     public abstractHitbox(double x2, double y2, int width, int height) {
         this.x = x2;
@@ -15,7 +16,7 @@ public abstract class abstractHitbox {
 
     public abstract void draw(Graphics g);
 
-    public boolean intersects(abstractHitbox other) {
+    public boolean intersects(Rectangle other) {
         return this.x < other.x + other.width && this.x + this.width > other.x &&
                this.y < other.y + other.height && this.y + this.height > other.y;
     }
@@ -40,4 +41,10 @@ public abstract class abstractHitbox {
     public double getHeight() {
         return height;
     }
+
+    public Rectangle toRectangle() {
+        return new Rectangle((int) x, (int) y, (int) width, (int) height);
+    }
+    
+    
 }

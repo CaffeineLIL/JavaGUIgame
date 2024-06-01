@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import abstracts.PlayerPositionProvider;
 import abstracts.abstractHitbox;
 import status_basis.RectangleHitbox;
+import utils.CollisionDetector;
 import abstracts.abstractPlayer;
 
 public class Player extends abstractPlayer implements PlayerPositionProvider {
@@ -19,8 +20,12 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
     private final double MOVE_AMOUNT = 6;
     private boolean alive = true;
     
-    int projectileSize = 10; // Projectile 크기 설정
-    double speed = 10;
+    private int projectileSize = 10; // Projectile 크기 설정
+    
+    private double damage; //공격 데미지
+    private double totalDmgup = 3; //획득한 공격 아이템의 계수의 총합
+    private double FlatDmgup = 0; // 아이템의 특수 공격력 수치
+    private double speed = 10;
 
     // w, s, a, d 동작 인식 변수 초기화
     private boolean upPressed = false;
@@ -40,6 +45,7 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
 
     // Projectile 리스트 추가
     private ArrayList<Projectile> projectiles;
+	private CollisionDetector collisionDetector;
 
     // 인터페이스 구현을 위한 오버라이드. 현재 x값과 y값 반환 메서드
     @Override
@@ -57,41 +63,78 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             alive = false;
         return alive;
     }
+    
+    //플레이어 체력 감소
+    public void decreaseHp(double amount) {
+        hp -= amount;
+        if (hp < 0) {
+            alive = false;
+        }
+    }
 
+    public double getHp() {
+        return hp;
+    }
+    
+    public double getDamage() {
+    	return damage;
+    }
+    
+    public abstractHitbox getHitbox() {
+        return hitbox;
+    }
+    
     public Player() {
         setOpaque(false);
         playerImg = new PlayerImage();
         playerImage = playerImg.getImage();
         projectiles = new ArrayList<>();
+        
+        // abstractPlayer의 PlayerAtk 메서드를 사용하여 플레이어의 공격 데미지 설정
+        damage = PlayerAtk(totalDmgup, FlatDmgup); 
+        
+        //장애물 충돌 감지 설정
+        collisionDetector = new CollisionDetector();
 
         // 초기 히트박스 설정
         hitbox = new RectangleHitbox(x, y, SIZE, SIZE);
 
         // KeyBindings 설정
         setupKeyBindings();
+        
 
         // Timer 설정 (이동을 부드럽게 하기 위해)
         Timer timer = new Timer(10, e -> {
             boolean moved = false;
+            
+            int newX = x;
+            int newY = y;
+            
             if (upPressed) {
-                y = (int) Math.max(y - MOVE_AMOUNT, 0);
+                newY = (int) Math.max(y - MOVE_AMOUNT, 0);
                 playerImg.moveDown();  // 위로 이동 시 이미지 변경
                 moved = true;
             }
             if (downPressed) {
-                y = (int) Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
+                newY = (int) Math.min(y + MOVE_AMOUNT, getHeight() - SIZE);
                 playerImg.moveDown();  // 아래로 이동 시 이미지 변경
                 moved = true;
             }
             if (leftPressed) {
-                x = (int) Math.max(x - MOVE_AMOUNT, 0);
+                newX = (int) Math.max(x - MOVE_AMOUNT, 0);
                 playerImg.moveDown();  // 왼쪽으로 이동 시 이미지 변경
                 moved = true;
             }
             if (rightPressed) {
-                x = (int) Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
+                newX = (int) Math.min(x + MOVE_AMOUNT, getWidth() - SIZE);
                 playerImg.moveDown();  // 오른쪽으로 이동 시 이미지 변경
                 moved = true;
+            }
+            
+            // 벽과의 충돌 감지
+            if (!collisionDetector.checkCollision(new Rectangle(newX, newY, SIZE, SIZE))) {
+                x = newX;
+                y = newY;
             }
 
             // Projectile 업데이트
@@ -107,8 +150,8 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             if (!moved) {
                 playerImg.moveInit();
             }
-            playerImage = playerImg.getImage(); // Update playerImage after moveDown or moveInit
-
+            
+            playerImage = playerImg.getImage(); //플레이어 이미지 변화시키기
             repaint();
         });
         timer.start();
@@ -191,12 +234,13 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             }
         });
 
-        // 화살표 키 액션 (Projectile 발사)
+        // 화살표 키 액션 (투사체-Projectile 발사)
         actionMap.put("upkeyPressed", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 upkeyPressed = true;
                 shootProjectile(0, -1); // 위쪽으로 발사
+                
             }
         });
         actionMap.put("upkeyReleased", new AbstractAction() {
@@ -274,7 +318,15 @@ public class Player extends abstractPlayer implements PlayerPositionProvider {
             }
         }
 
+        
         // 히트박스 그리기
-        //hitbox.draw(g);
+        hitbox.draw(g);
     }
+  
+    public void setCollisionDetector(CollisionDetector collisionDetector) {
+        this.collisionDetector = collisionDetector;
+    }
+
+
+
 }
